@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1643AB00-4B82-4413-A67F-BE7CC4F024C4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Model.DAL</RootNamespace>
+    <AssemblyName>Model.DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\Arguments.cs" />
+    <Compile Include="DTO\PrensaDato.cs" />
+    <Compile Include="DTO\Tag.cs" />
+    <Compile Include="DTO\Tag_Provider.cs" />
+    <Compile Include="DTO\Tag_Mapping.cs" />
+    <Compile Include="DTO\Usuario_Prensa.cs" />
+    <Compile Include="Interfaces\IPrensasDatos.cs" />
+    <Compile Include="PrensasDatosDAL.cs" />
+    <Compile Include="Tag_MappingDAL.cs" />
+    <Compile Include="Interfaces\ISiguienteCubierta.cs" />
+    <Compile Include="Interfaces\IZona.cs" />
+    <Compile Include="Interfaces\ITagProvider.cs" />
+    <Compile Include="Interfaces\ITags.cs" />
+    <Compile Include="Interfaces\ITag_Mapping.cs" />
+    <Compile Include="Interfaces\ISolicitud.cs" />
+    <Compile Include="Interfaces\IPermiso.cs" />
+    <Compile Include="Interfaces\IRol.cs" />
+    <Compile Include="Siguiente_CubiertaDAL.cs" />
+    <Compile Include="PrensaDAL.cs" />
+    <Compile Include="RolDAL.cs" />
+    <Compile Include="SolicitudDAL.cs" />
+    <Compile Include="TagsDAL.cs" />
+    <Compile Include="ZonaDAL.cs" />
+    <Compile Include="PermisoDAL.cs" />
+    <Compile Include="Motivo_DeshabilitacionDAL.cs" />
+    <Compile Include="EventoDAL.cs" />
+    <Compile Include="EstadoDAL.cs" />
+    <Compile Include="DispositivoDAL.cs" />
+    <Compile Include="ContramedidaDAL.cs" />
+    <Compile Include="Database\DataAccesor.cs" />
+    <Compile Include="DTO\Contramedida.cs" />
+    <Compile Include="DTO\Dispositivo.cs" />
+    <Compile Include="DTO\Especificacion.cs" />
+    <Compile Include="DTO\Estado.cs" />
+    <Compile Include="DTO\Evento.cs" />
+    <Compile Include="DTO\Historico_Contramedidas.cs" />
+    <Compile Include="DTO\Historico_Deshabilitacion.cs" />
+    <Compile Include="DTO\Historico_Solicitud.cs" />
+    <Compile Include="DTO\Login_Dispositivo.cs" />
+    <Compile Include="DTO\Motivo_Deshabilitacion.cs" />
+    <Compile Include="DTO\Permiso.cs" />
+    <Compile Include="DTO\Prensa.cs" />
+    <Compile Include="DTO\Rol.cs" />
+    <Compile Include="DTO\Siguiente_Cubierta.cs" />
+    <Compile Include="DTO\Solicitud.cs" />
+    <Compile Include="DTO\Usuario.cs" />
+    <Compile Include="DTO\Zona.cs" />
+    <Compile Include="Interfaces\IMotivo_Deshabilitacion.cs" />
+    <Compile Include="Login_DispositivoDAL.cs" />
+    <Compile Include="Historico_SolicitudDAL.cs" />
+    <Compile Include="Historico_DeshabilitacionDAL.cs" />
+    <Compile Include="Historico_ContramedidasDAL.cs" />
+    <Compile Include="Interfaces\IHistoricoDAL.cs" />
+    <Compile Include="Interfaces\IDAL.cs" />
+    <Compile Include="Interfaces\IContramedida.cs" />
+    <Compile Include="Interfaces\IDispositivo.cs" />
+    <Compile Include="Interfaces\IEspecificacion.cs" />
+    <Compile Include="Interfaces\IEvento.cs" />
+    <Compile Include="Interfaces\IEstado.cs" />
+    <Compile Include="Interfaces\ILogin_Dispositivo.cs" />
+    <Compile Include="Interfaces\IHistorico_Solicitud.cs" />
+    <Compile Include="Interfaces\IHistorico_Deshabilitacion.cs" />
+    <Compile Include="Interfaces\IHistorico_Contramedidas.cs" />
+    <Compile Include="Interfaces\IPrensa.cs" />
+    <Compile Include="Interfaces\IUsuario.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="EspecificacionDAL.cs" />
+    <Compile Include="UsuarioDAL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Database\Common.Database\Common.Database.csproj">
+      <Project>{2a738cb9-1411-4fec-a9c1-34016683a9c3}</Project>
+      <Name>Common.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Logger\Common.Logger.csproj">
+      <Project>{db95373e-d53e-4172-912e-98f671d62729}</Project>
+      <Name>Common.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model.Oracle\Model.Oracle.csproj">
+      <Project>{e35e8697-c1ea-4bb3-9654-d221f6bab683}</Project>
+      <Name>Model.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model.SqlServer\Model.SqlServer.csproj">
+      <Project>{bd9bd527-4114-4237-8960-59f7c21ded8e}</Project>
+      <Name>Model.SqlServer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

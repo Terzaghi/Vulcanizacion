@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XML_ConfigurationFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Librarys>
+    <XML_LoadLibrarysDTO ID="proveedorSimulacion" Assembly="DataProviders\Provider.Simulator.dll" Class="Provider.Simulator.Simulator" Description="Proveedor con datos de simulación" />
+    <XML_LoadLibrarysDTO ID="proveedorOPC" Assembly="DataProviders\Provider.OPC.dll" Class="Provider.OPC.Connector" Description="Proveedor OPC" />
+  </Librarys>
+  <Interval>0</Interval>
+</XML_ConfigurationFile>
