@@ -1,6 +1,5 @@
 ﻿
 using Memory.Common;
-using RequestManager.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +25,7 @@ namespace RequestManager.DTO
         /// <summary>
         /// Indica el tipo de de solicitud 
         /// </summary>
-        public RequestType Type { get; set; }
+        //public RequestType Type { get; set; }
       
 
         // Vinculaciones a otros datos:

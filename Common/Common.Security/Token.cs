@@ -9,13 +9,7 @@ namespace Common.Security
     {            
         #region Propiedades
         public int Id_Usuario { get; private set; }
-
-        //public List<int> Grupos { get; set; }
-
-        //public int Id_Idioma { get; private set; }
-
-        //public List<Funcionalidad> PermisoZonas { get; private set; }
-
+        public int Id_Device { get; private set; }
         public long TickHora { get; private set; }
         private bool _esValido = false;
         public bool EsValido
@@ -42,16 +36,14 @@ namespace Common.Security
             Inicializa(); 
         }
 
-        public Token(string tokenString, string ClavePrivada) : base()
+        public Token(string tokenString) : base()
         {
             Inicializa();
 
             try
             {
                 string pass = string.Empty;
-                if (ClavePrivada != null)
-                    pass = ClavePrivada;
-
+              
                 // Desciframos la trama
                 Cifrado.AES cifrado = new Cifrado.AES();                
                 string strToken = cifrado.Decrypt(tokenString, pass, "inicializa cadena", "SHA1", 1, "BSHP-3512-BACRFA", 128);
@@ -61,47 +53,7 @@ namespace Common.Security
 
                 // Cargamos el id_usuario
                 this.Id_Usuario = Convert.ToInt32(tramas[0]);
-
-                // Cargamos el idioma configurado al usuario
-                this.Id_Idioma = Convert.ToInt32(tramas[1]);
-
-                // Cargamos los grupos
-                string[] grupos = tramas[2].Split('|');
-                foreach (string grp in grupos)
-                {
-                    if (grp.Length > 0)
-                    {
-                        int id_Grupo = Convert.ToInt32(grp);
-                        this.Grupos.Add(id_Grupo);
-                    }
-                }
-
-                // Cargamos los permisos
-                this.PermisoZonas = new List<Funcionalidad>();
-                string tramaPermisos = tramas[3];
-                if (tramaPermisos.Length > 0)
-                {
-                    string[] permisos = tramaPermisos.Split('|');
-                        
-                    foreach (string zona in permisos)
-                    {
-                        string[] parametros = zona.Split('-');
-                        int Id_GC_Funcionalidad = Convert.ToInt32(parametros[0]);
-
-                        List<int> lstTipos = new List<int>();
-                        string[] tipos = parametros[1].Split(',');
-                        foreach (string tipo in tipos)
-                        {
-                            if (tipo != "")
-                            {
-                                int id_tipo = Convert.ToInt32(tipo);
-                                lstTipos.Add(id_tipo);
-                            }
-                        }
-
-                        this.PermisoZonas.Add(new Funcionalidad(Id_GC_Funcionalidad, lstTipos));
-                    }
-                }
+               
                 // Cargamos la fecha de caducidad
                 long duracionToken = long.Parse(tramas[4]);
                 if (duracionToken == 0)
@@ -136,9 +88,7 @@ namespace Common.Security
         private void Inicializa()
         {
             this._esValido = false;
-            this.Grupos = new List<int>();
-            this.PermisoZonas = new List<Funcionalidad>();
-            this.Id_Idioma = 0;
+           
             this.TokenString = "";
         }
 
@@ -146,10 +96,8 @@ namespace Common.Security
         protected Token(SerializationInfo info, StreamingContext context)
         {
             this.Id_Usuario = (int)info.GetValue("Id_Usuario", typeof(int));
-            this.Grupos = (List<int>)info.GetValue("Grupos", typeof(List<int>));
-            this.PermisoZonas = (List<Funcionalidad>)info.GetValue("PermisoZonas", typeof(List<Funcionalidad>));
+            this.Id_Device = (int)info.GetValue("Id_Device", typeof(int));
             this.TickHora = (long)info.GetValue("TickHora", typeof(long));
-            this.Id_Idioma = (int)info.GetValue("Id_Idioma", typeof(int));
             this.TokenString = (string)info.GetValue("Token", typeof(string));
             this._esValido = (bool)info.GetValue("_esValido", typeof(bool));
         }
@@ -160,9 +108,7 @@ namespace Common.Security
                 throw new System.ArgumentNullException("info");
 
             info.AddValue("Id_Usuario", this.Id_Usuario);
-            info.AddValue("Id_Idioma", this.Id_Idioma);
-            info.AddValue("Grupos", this.Grupos);
-            info.AddValue("PermisoZonas", this.PermisoZonas);
+            this.Id_Device = (int)info.GetValue("Id_Device", typeof(int));
             info.AddValue("TickHora", this.TickHora);
             info.AddValue("Token", this.TokenString);
             info.AddValue("_esValido", this._esValido);

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TagCatalog.DTO
+namespace RequestManager.Conditions
 {
-    public class TagInfo
+    public enum ActionForRequest
     {
-        public int Id_Tag { get; set; }
-        public string TagName { get; set; }
+        Generated,
+        Delete,
+        None
     }
 }

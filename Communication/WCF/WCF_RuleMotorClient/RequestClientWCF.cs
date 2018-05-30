@@ -9,7 +9,7 @@ using System.ServiceModel;
 
 namespace WCF_RequestMotorClient
 {
-    public class RequestClientWCF 
+    public class RequestClientWCF
     {
         ILogger log = LogFactory.GetLogger(typeof(RequestClientWCF));
 
@@ -21,7 +21,7 @@ namespace WCF_RequestMotorClient
         public string Host { get; set; }
         public int Port { get; set; }
 
-   
+
         public RequestClientWCF()
         {
             // Configuración por defecto
@@ -42,7 +42,7 @@ namespace WCF_RequestMotorClient
 
         // Otro contructor. Se utiliza para cuando se conecta desde el client manager, pasando el puerto sin 
         // tener archivo con configuración
-        public RequestClientWCF(int port): base()
+        public RequestClientWCF(int port) : base()
         {
             this.Host = "127.0.0.1";
             this.Port = port;
@@ -64,15 +64,15 @@ namespace WCF_RequestMotorClient
                 NetTcpBinding _elbinding = new NetTcpBinding();
                 _elbinding.Security.Mode = SecurityMode.None;
 
-                
+
                 _elbinding.CloseTimeout = new TimeSpan(0, 10, 0);
                 _elbinding.SendTimeout = new TimeSpan(0, 10, 0);
                 _elbinding.ReceiveTimeout = new TimeSpan(0, 10, 0);
                 //_elbinding.OpenTimeout = new TimeSpan(0, 10, 0);
                 _elbinding.OpenTimeout = new TimeSpan(0, 10, 0);
-                _elbinding.MaxConnections = 20000;  
+                _elbinding.MaxConnections = 20000;
 
-                _elbinding.MaxBufferPoolSize = int.MaxValue;                                
+                _elbinding.MaxBufferPoolSize = int.MaxValue;
 
                 _elbinding.MaxBufferSize = int.MaxValue;
                 _elbinding.MaxReceivedMessageSize = int.MaxValue;
@@ -85,13 +85,13 @@ namespace WCF_RequestMotorClient
                 ChannelFactory<IRequestMotorWCF> factory = new ChannelFactory<IRequestMotorWCF>(_elbinding, endPoint);
                 factory.Closed += Factory_Closed;
                 factory.Faulted += Factory_Faulted;
-                factory.Opened += Factory_Opened;                             
+                factory.Opened += Factory_Opened;
                 _client = factory.CreateChannel();
 
                 sw = true;
 
                 if (factory.State == CommunicationState.Opened)
-                    this.Conectado = sw;                
+                    this.Conectado = sw;
             }
             catch (Exception er)
             {
@@ -107,7 +107,7 @@ namespace WCF_RequestMotorClient
 
             return sw;
         }
-        
+
         private void Factory_Opened(object sender, EventArgs e)
         {
             this.Conectado = true;
@@ -125,51 +125,94 @@ namespace WCF_RequestMotorClient
 
         #endregion
 
-        public void MarkAllAs_Async(long[] Ids_RequestsGenerateds, Estado_Solicitud state, int? id_User, int? id_Device)
+        public void MarkAs_Async(long Ids_Request, Estado_Solicitud state, int? id_User, int? id_Device)
         {
             try
             {
                 if (this.Conectado)
                 {
-                    this._client.MarkAllAs_Async(Ids_RequestsGenerateds, (int)state, id_User, id_Device);
+                    this._client.MarkAs_Async(Ids_Request, (int)state, id_User, id_Device);
                 }
             }
             catch (Exception er)
             {
-                log.Error("MarkAllAs_Async()", er);
+                log.Error("MarkAs_Async()", er);
             }
         }
 
-        /// <summary>
-        /// Devuelve un listado de notificaciones generadas con detalles que indican si la regla está activa o no, filtradas por el destinatario
-        /// </summary>
-        /// <param name="Id_User"></param>
-        /// <param name="Id_Device"></param>
-        /// <returns></returns>
-        public List<RequestWithStates> ListPendingRequestsWithState(int? Id_User, int? Id_Device,int numeroElementos)
+        public void AddPrensa(int id_Prensa)
         {
-            List<RequestWithStates> r = null;
-
             try
             {
                 if (this.Conectado)
                 {
-                    string json = this._client.ListPendingRequestsWithState(Id_User, Id_Device,numeroElementos);
-
-                    r = JsonConvert.DeserializeObject<List<RequestWithStates>>(json, new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.All
-                    });
-
+                    this._client.AddPrensa(id_Prensa);
                 }
             }
             catch (Exception er)
             {
-                log.Error("ListPendingRequestsWithState()", er);
+                log.Error("AddPrensa()", er);
             }
-
-            return r;
         }
+        public void ModifyPrensa()
+        {
+            try
+            {
+                if (this.Conectado)
+                {
+                    this._client.ModifyPrensa();
+                }
+            }
+            catch (Exception er)
+            {
+                log.Error("ModifyPrensa()", er);
+            }
+        }
+        public void RemovePrensa(int id_prensa)
+        {
+            try
+            {
+                if (this.Conectado)
+                {
+                    this._client.RemovePrensa(id_prensa);
+                }
+            }
+            catch (Exception er)
+            {
+                log.Error("RemovePrensa()", er);
+            }
+        }
+        public bool IsBarcodeValid(string barcode, int id_prensa)
+        {
+            try
+            {
+                if (this.Conectado)
+                {
+                    return true;
+                }
+            }
+            catch (Exception er)
+            {
+                log.Error("RemovePrensa()", er);
+            }
+            return false;
+        }
+        Tipo_Contramedidas getContramedidas(int id_prensa)
+        {
+            try
+            {
+                if (this.Conectado)
+                {
+                    return Tipo_Contramedidas.Pinchar;
+                }
+            }
+            catch (Exception er)
+            {
+                log.Error("getContramedidas()", er);
+            }
+            return Tipo_Contramedidas.Pinchar;
+        }
+
 
 
 

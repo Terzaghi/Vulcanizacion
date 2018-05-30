@@ -14,7 +14,7 @@ using ValuesMemory;
 
 namespace DataProvider.TManager
 {
-    public class Provider : IDataProvider
+    public class Provider : IDataProvider,IDisposable
     {
         ILogger log = LogFactory.GetLogger(typeof(Provider));
 
@@ -103,7 +103,22 @@ namespace DataProvider.TManager
 
             return sw;
         }
+        public bool Stop()
+        {
+            bool sw = false;
 
+            try
+            {
+                if (_alive) _alive = false;
+                sw = true;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Start. ", ex);
+            }
+
+            return sw;
+        }
         #endregion
 
         #region Bucle de comprobación
@@ -246,7 +261,62 @@ namespace DataProvider.TManager
                 log.Error("CompruebaRegistro()", ex);
             }
         }
-        
+
         #endregion
+
+
+        #region Interfaz IDisposable
+
+        // Indica si ya se llamo al método Dispose. (default = false)
+        private bool disposed;
+
+        /// <summary>
+        /// Implementación de IDisposable. No se sobreescribe.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            // GC.SupressFinalize quita de la cola de finalización al objeto.
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Limpia los recursos manejados y no manejados.
+        /// </summary>
+        /// <param name="disposing">
+        /// Si es true, el método es llamado directamente o indirectamente
+        /// desde el código del usuario.
+        /// Si es false, el método es llamado por el finalizador
+        /// y sólo los recursos no manejados son finalizados.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            // Preguntamos si Dispose ya fue llamado.
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Llamamos al Dispose de todos los RECURSOS MANEJADOS.
+                    this.Stop();
+                    //if (_timer != null)
+                    //    _timer.Dispose();
+                }
+
+                // Aqui finalizamos correctamente los RECURSOS NO MANEJADOS
+                // ...
+
+            }
+            this.disposed = true;
+        }
+
+        /// <summary>
+        /// Destructor de la instancia
+        /// </summary>
+        ~Provider()
+        {
+            this.Dispose(false);
+        }
+        #endregion
+
     }
 }

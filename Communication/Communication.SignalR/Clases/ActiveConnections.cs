@@ -14,10 +14,7 @@ namespace Communication.SignalR.Clases
 
         // Almacena el connectionId, seguido de los datos de la conexión
         private Dictionary<string, Connection> _dicConexionesActivas { get; set; }
-        //private Dictionary<string, List<string>> _dicIPConnectionID { get; set; }
-
-        //Listado de pings realizados y que aún no se ha recibido respuesta (Pong) por parte del cliente
-        //private List<string> pings { get; set; }
+      
 
         #endregion
 
@@ -26,7 +23,7 @@ namespace Communication.SignalR.Clases
         public ActiveConnections()
         {
             this._dicConexionesActivas = new Dictionary<string, Connection>();
-            //this._dicIPConnectionID = new Dictionary<string, List<string>>();
+          
         }
 
         #endregion
@@ -61,38 +58,7 @@ namespace Communication.SignalR.Clases
                             // Agregamos también la conexión por IP
                         }
                     }
-                    /*
-                    lock (pings)
-                    {
-                        if (pings.Contains(connectionId))
-                            pings.Remove(connectionId);
-                    }
-                    */
-
-                    #region Registra en signalR la conexión por grupos
-                    log.Debug("SignalR, registrando datos de los grupos vinculados al usuario (Conexión: {0})", connectionId);
-                    var Groups = context.Groups;
-
-                    if (Groups != null)
-                    {
-                        // Vinculamos la conexión a sus grupos de clientes
-                        if (token.Grupos != null)
-                        {
-                            foreach (var idGrupo in token.Grupos)
-                            {
-                                // Podemos agregarles a un grupo en concreto
-                                string nombreGrupo = idGrupo.ToString();
-                                Groups.Add(connectionId, nombreGrupo);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        log.Warning("SignalR. Groups aún no definido (Conexión: {0})", connectionId);
-                    }
-                    #endregion
-
-
+                   
                     // Lanzamos el evento
                     SignalRManager.GetInstance.Hub_ClientConnected(
                         connectionId,
@@ -143,29 +109,6 @@ namespace Communication.SignalR.Clases
                                 }
                             }
                             log.Trace(string.Format("UnsubscribeClient: Se elimina connectionId [{0}]", connectionId));
-
-
-                            #region Antes de desuscribirle, eliminamos sus conexiones
-                            var Groups = context.Groups;
-
-                            if (Groups != null && token != null)
-                            {
-                                // Desvinculamos la conexión de sus grupos
-                                if (token.Grupos != null)
-                                {
-                                    foreach (var idGrupo in token.Grupos)
-                                    {
-                                        // Podemos agregarles a un grupo en concreto
-                                        string nombreGrupo = idGrupo.ToString();
-                                        Groups.Remove(connectionId, nombreGrupo);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                log.Warning("SignalR. Desconexión. Groups aún no definido (Conexión: {0})", connectionId);
-                            }
-                            #endregion
 
                             // Lanzamos el evento de desconexión del usuario
                             SignalRManager.GetInstance.Hub_ClientDisconnected(

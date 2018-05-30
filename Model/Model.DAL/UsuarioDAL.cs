@@ -455,5 +455,44 @@ namespace Model.DAL
 
             return sw;
         }
+        public IList<Tuple<int,int>> ListarPrensasUsuarios()
+        {
+            IList<Tuple<int, int>> lst = null;
+
+            try
+            {
+                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                string ic = accessor.ParameterIdentifierCharacter();
+                var sql = string.Format(@"SELECT
+                                            ID_PRENSA AS {0},
+                                            ID_USUARIO AS {1}
+                                        FROM USUARIO_PRENSA",
+                                        Arguments.Id_Prensa, Arguments.ID_Usuario);
+
+                List<IDataParameter> parameters = new List<IDataParameter>();
+               
+
+                var ds = accessor.FillDataSet(sql, parameters);
+
+               
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    lst = new List<Tuple<int, int>>();
+
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                    {
+                        var id_prensa = Convert.ToInt16(ds.Tables[0].Rows[i][Arguments.Id_Prensa]);
+                        var id_usuario = Convert.ToInt16(ds.Tables[0].Rows[i][Arguments.ID_Usuario]);
+                        var tuple = new Tuple<int, int>(id_prensa,id_usuario);
+                        lst.Add(tuple);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("ListarPrensasDeUsuario()", ex);
+            }
+            return lst;
+        }
     }
 }

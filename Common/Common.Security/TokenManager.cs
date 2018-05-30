@@ -19,7 +19,7 @@ namespace Common.Security
         /// <param name="TrickHoraCaducidad"></param>
         /// <param name="ClavePrivada"></param>
         /// <returns></returns>
-        public string GenerateStringToken(int Id_Usuario, int Id_Idioma, List<Funcionalidad> PermisoZonas, List<int> Grupos, long? TrickHoraCaducidad, string ClavePrivada)
+        public string GenerateStringToken(int Id_Usuario,int Id_Device, long? TrickHoraCaducidad)
         {
             string strTokenCifrado = "";
 
@@ -27,48 +27,9 @@ namespace Common.Security
             {
                 // Creamos nuestra trama
                 string strToken = Id_Usuario.ToString() + "/";
-
-                // Guardamos el idioma
-                strToken += Id_Idioma + "/";
-
-                // Guardamos los grupos
-                if (Grupos == null) Grupos = new List<int>();                
-                foreach (int grupo in Grupos)
-                {
-                    strToken += grupo + "|";
-                }
-                if (strToken.EndsWith("|"))
-                    strToken = strToken.Substring(0, strToken.Length - 1);                
-                strToken += "/";
-
-                // Guardamos los permisos
-                if (PermisoZonas != null)
-                {
-                    foreach (Funcionalidad zona in PermisoZonas)
-                    {
-                        // Almacenamos el id_funcionalidad 
-                        strToken += zona.Id_Feature.ToString() + "-";
-                        // y separado por un guion ponemos la lista de permisos de esta funcionalidad
-                        foreach (int permiso in zona.Permissions)
-                        {
-                            strToken += permiso + ",";
-                        }
-                        // Para separar entre una funcionalidad con permisos y otra ponemmos una barra |
-                        strToken += "|";
-                    }
-                }
-                if (strToken.EndsWith("|"))
-                    strToken = strToken.Substring(0, strToken.Length - 1);
-                // Guardamos la caducidad
-                strToken += "/" + ((TrickHoraCaducidad == null) ? 0 : TrickHoraCaducidad);
-
-                // Ciframos la trama
-                string pass = string.Empty;
-                if (ClavePrivada != null)
-                    pass = ClavePrivada;
                                 
                 Cifrado.AES cifrado = new Cifrado.AES();
-                strTokenCifrado = cifrado.Encrypt(strToken, pass, "inicializa cadena", "SHA1", 1, "BSHP-3512-BACRFA", 128);
+                strTokenCifrado = cifrado.Encrypt(strToken, "", "inicializa cadena", "SHA1", 1, "BSHP-3512-BACRFA", 128);
             }
             catch (Exception er)
             {
@@ -88,13 +49,13 @@ namespace Common.Security
         /// <param name="TrickHoraCaducidad"></param>
         /// <param name="ClavePrivada"></param>
         /// <returns></returns>
-        public Token GenerateToken(int Id_Usuario, int Id_Idioma, List<int> Grupos, List<Funcionalidad> PermisoZonas, long? TrickHoraCaducidad, string ClavePrivada)
+        public Token GenerateToken(int Id_Usuario, int Id_Device,long? TrickHoraCaducidad)
         {
             Token tok = null;
             try
             {
-                string strToken = GenerateStringToken(Id_Usuario, Id_Idioma, PermisoZonas, Grupos, TrickHoraCaducidad, ClavePrivada);
-                tok = ReadToken(strToken, ClavePrivada);
+                string strToken = GenerateStringToken(Id_Usuario, Id_Device,TrickHoraCaducidad);
+                tok = ReadToken(strToken);
             }
             catch (Exception er)
             {
@@ -110,14 +71,14 @@ namespace Common.Security
         /// <param name="Token"></param>
         /// <param name="ClavePrivada"></param>
         /// <returns></returns>
-        public Token ReadToken(string Token, string ClavePrivada)
+        public Token ReadToken(string Token)
         {
             Token tokUsuario = null;
 
             try
             {
                 // Desciframos y cargamos la trama
-                tokUsuario = new Token(Token, ClavePrivada);
+                tokUsuario = new Token(Token);
             }
             catch (Exception er)
             {

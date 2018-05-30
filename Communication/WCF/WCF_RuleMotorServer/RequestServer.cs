@@ -24,100 +24,68 @@ namespace WCF_RequestMotorServer
             this._signalR = signalR;
         }
 
-        #region Infomación del servidor
-        public bool IsActive()
+        public void AddPrensa(int id_Prensa)
+        {
+            try
+            {
+                this._motorSolicitudes.AddPrensa(id_Prensa);
+            }catch(Exception ex)
+            {
+                log.Error("AddPrensa()", ex);
+            }
+        }
+
+        public bool IsBarcodeValid(string barcode, int id_prensa)
         {
             bool sw = false;
             try
             {
-                sw = this._motorSolicitudes.IsActive();
-            }
-            catch (Exception er)
+               sw= this._motorSolicitudes.isBarcodeValid(barcode, id_prensa);
+            }catch(Exception ex)
             {
-                log.Error("IsActive()", er);
+                log.Error("IsBarcodeValid()", ex);
             }
             return sw;
-
         }
-        #endregion
 
-        #region Solicitudes  
-        public string ListActiveRequest(List<int> Ids_Requests)
-        {
-            string result = string.Empty;
-
-            try
-            {
-                var lst = this._motorSolicitudes.ListActiveRequest(Ids_Requests);
-
-                // Convertimos el resultado a json
-                result = Newtonsoft.Json.JsonConvert.SerializeObject(lst, new Newtonsoft.Json.JsonSerializerSettings
-                {
-                    TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All
-                });
-            }
-            catch (Exception er)
-            {
-                log.Error("ListActiveRules()", er);
-            }
-
-            return result;
-        }
-        public string ListPendingRequestsWithState(int? Id_User, int? Id_Device, int numeroElementos)
-        {
-            string result = string.Empty;
-            int numRegistros = -1;
-
-            try
-            {
-                var lst = this._motorSolicitudes.ListPendingRequestsWithState(Id_User, Id_Device, numeroElementos);
-
-                if (lst != null)
-                    numRegistros = lst.Count;
-
-                // Convertimos el resultado a json
-                result = Newtonsoft.Json.JsonConvert.SerializeObject(lst, new Newtonsoft.Json.JsonSerializerSettings
-                {
-                    TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All
-                });
-            }
-            catch (Exception er)
-            {
-                log.Error("ListPendingNotificationsWithState(). Registros rule: {0}", er, numRegistros);
-            }
-
-            return result;
-        }
-        public void MarkAllAs_Async(long[] Ids_RequestGenerateds, int state, int? id_User, int? id_Device)
+        public void MarkAs_Async(long id_Request, Estado_Solicitud state, int? id_User, int? id_Device)
         {
             try
             {
-                this._motorSolicitudes.MarkAllAs_Async(Ids_RequestGenerateds, (Estado_Solicitud)state, id_User, id_Device);
-            }
-            catch (Exception er)
+                this._motorSolicitudes.MarkAs_Async(id_Request, state, id_User, id_Device);
+
+            }catch(Exception ex)
             {
-                log.Error("MarkAllAs_Async()", er);
+                log.Error("MarkAs_Async", ex);
             }
         }
-        #endregion
 
-
-        #region Tags 
-        public object ReadValue(string tag)
+        public void ModifyPrensa()
         {
-            object result = null;
-
             try
             {
-                result = this._motorSolicitudes.ReadValue(tag);
-            }
-            catch (Exception er)
+                this._motorSolicitudes.ModifyPrensa();
+            }catch(Exception ex)
             {
-                log.Error("ReadValue()", er);
+                log.Error("ModifyPrensa", ex);
             }
-
-            return result;
         }
-        #endregion
+
+        public void RemovePrensa(int id_prensa)
+        {
+            try
+            {
+                this._motorSolicitudes.RemovePrensa(id_prensa);
+            }
+            catch (Exception ex)
+            {
+                log.Error("RemovePrensa", ex);
+            }
+        }
+
+        public Tipo_Contramedidas getContramedidas(int id_prensa)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

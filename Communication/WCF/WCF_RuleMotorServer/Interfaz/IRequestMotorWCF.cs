@@ -1,4 +1,5 @@
-﻿using RuleManager.DTO;
+﻿using Model.BL.DTO.Enums;
+using RuleManager.DTO;
 using System.Collections.Generic;
 using System.ServiceModel;
 
@@ -8,19 +9,16 @@ namespace WCF_RuleMotorServer.Interfaz
     public interface IRequestMotorWCF
     {
         [OperationContract]
-        bool IsActive();
-
+        void MarkAs_Async(long ids_Request, Estado_Solicitud state, int? id_User, int? id_Device);
         [OperationContract]
-        string ListActiveRequest(List<int> Ids_Requests);
-
+        void AddPrensa(int id_Prensa);
         [OperationContract]
-        string ListPendingRequestsWithState(int? id_User, int? id_Device, int numeroElementos);
-
-
+        void ModifyPrensa();
         [OperationContract]
-        void MarkAllAs_Async(long[] Ids_RequestGenerateds, int state, int? id_User, int? id_Device);
-
+        void RemovePrensa(int id_prensa);
         [OperationContract]
-        object ReadValue(string tag);
+        bool IsBarcodeValid(string barcode, int id_prensa);
+        [OperationContract]
+        Tipo_Contramedidas getContramedidas(int id_prensa);
     }
 }

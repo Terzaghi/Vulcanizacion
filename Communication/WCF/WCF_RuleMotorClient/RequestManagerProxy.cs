@@ -10,15 +10,21 @@
 
 
 
+using Model.BL.DTO.Enums;
 using System.Collections.Generic;
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
 [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IRequestMotorWCF")]
 public interface IRequestMotorWCF
 {
-    string ListActiveRequest(List<int> Ids_Requests);
-    void MarkAllAs_Async(long[] ids_RequestsGenerateds, int state, int? id_User, int? id_Device);
-    string ListPendingRequestsWithState(int? id_User, int? id_Device, int numeroElementos);
+
+     void MarkAs_Async(long ids_Request, int state, int? id_User, int? id_Device);
+     void AddPrensa(int id_Prensa);
+     void ModifyPrensa();
+     void RemovePrensa(int id_prensa);
+     bool IsBarcodeValid(string barcode, int id_prensa);
+     Tipo_Contramedidas getContramedidas(int id_prensa);
+  
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -56,16 +62,30 @@ public partial class RequestMotorWCFClient : System.ServiceModel.ClientBase<IReq
     {
     }
 
-    public void MarkAllAs_Async(long[] ids_RequestsGenerateds, int state, int? id_User, int? id_Device)
+    public void MarkAs_Async(long ids_Request, int state, int? id_User, int? id_Device)
     {
-        base.Channel.MarkAllAs_Async(ids_RequestsGenerateds, state, id_User, id_Device);
+        base.Channel.MarkAs_Async(ids_Request, state, id_User, id_Device);
     }
-    public string ListPendingRequestsWithState(System.Nullable<int> Id_User, System.Nullable<int> Id_Device, int numeroElementos)
+    public void AddPrensa(int id_prensa)
     {
-        return base.Channel.ListPendingRequestsWithState(Id_User, Id_Device, numeroElementos);
+        base.Channel.AddPrensa(id_prensa);
     }
-    public string ListActiveRequest(List<int> Ids_Requests)
+    public void ModifyPrensa()
     {
-        return base.Channel.ListActiveRequest(Ids_Requests);
+        base.Channel.ModifyPrensa();
     }
+    public void RemovePrensa(int id_prensa)
+    {
+        base.Channel.RemovePrensa(id_prensa);
+    }
+    public bool IsBarcodeValid(string barcode, int id_prensa)
+    {
+        return this.Channel.IsBarcodeValid(barcode,id_prensa);
+    }
+    public Tipo_Contramedidas getContramedidas(int id_prensa)
+    {
+        return this.Channel.getContramedidas(id_prensa);
+    }
+
+    
 }

@@ -40,8 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DTO\TagInfo.cs" />
-    <Compile Include="Tags.cs" />
+    <Compile Include="DTO\Prensa.cs" />
+    <Compile Include="Enums\Prioridad.cs" />
+    <Compile Include="PrensaCatalog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -54,7 +55,7 @@
       <Name>Common.Logger</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\Model.BL.DTO\Model.BL.DTO.csproj">
-      <Project>{C78569C4-3A0C-4DFE-975F-E72F44EB3AA3}</Project>
+      <Project>{c78569c4-3a0c-4dfe-975f-e72f44eb3aa3}</Project>
       <Name>Model.BL.DTO</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\Model.BL\Model.BL.csproj">

@@ -14,7 +14,6 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
-using TagCatalog;
 using ValuesMemory;
 using WCF_RequestMotorServer;
 using static RequestManager.RequestMotor;
@@ -29,10 +28,11 @@ namespace PrensasService
         private readonly string _configurationInfo; //Configuración del servicio
 
         MemoryValues _datosEnMemoria;
-        Tags _catalogoTags;              // Catálogo de señales configuradas
+        PrensaCatalog.PrensaCatalog _catalogoPrensas;              // Catálogo de señales configuradas
         RequestMotor _motorSolicitudes;  // Validación y lanzamiento de las solicitudes
-        List<Prensa> _catalogoPrensas;
-        IDataProvider _proveedorDatos;
+        DataProvidersManagement.DataProvidersManagement _proveedorDatos;
+        RequestServerWCF _servidorWCF;
+
         public PrensasService()
         {
             InitializeComponent();
@@ -96,23 +96,22 @@ namespace PrensasService
                 log.Information("Inicializando sistema");
 
                 //this._conexiones = new ConnectionsManager.Connections();
-                this._catalogoTags = new TagCatalog.Tags();
+                this._catalogoPrensas = new PrensaCatalog.PrensaCatalog();
 
                 this._datosEnMemoria = new MemoryValues();
-
-                this._catalogoPrensas = new Model.BL.Prensas().Listar();          
+    
                 
                 // Se va a inicializar el motor de solicitudes, que cargará de los archivos temporales las solicitudes anteriores que hubiera (puede tardar)
                 DateTime fch1 = DateTime.UtcNow;
                 log.Debug("Motor de Solicitudes. Iniciando y cargando reglas anteriores... (puede tardar)");
 
-                this._proveedorDatos = new DataProvider.TManager.Provider(ref _datosEnMemoria);
+                this._proveedorDatos = new DataProvidersManagement.DataProvidersManagement(new DataProvider.TManager.Provider(ref _datosEnMemoria));
+
+                { }
                 this._proveedorDatos.DataChanged += _proveedorDatos_DataChanged;
 
-                this._motorSolicitudes = new RequestMotor(ref this._datosEnMemoria, ref this._proveedorDatos);
-                this._motorSolicitudes.RequestStateChanged += _motorSolicitudes_RequestStateChanged;
-                this._motorSolicitudes.RequestExpired += _motorSolicitudes_RequestExpired;
-
+                this._motorSolicitudes = new RequestMotor(ref this._datosEnMemoria, ref this._catalogoPrensas,ref this._proveedorDatos);
+           
               
                 TimeSpan tsTiempoCarga = DateTime.UtcNow - fch1;
                 log.Debug(string.Format("Tiempo de inicialización: {0} sg", tsTiempoCarga.Seconds));
@@ -128,36 +127,36 @@ namespace PrensasService
                 log.Error("Inicializa()", er);
             }
         }
-        private void _motorSolicitudes_RequestExpired(object sender, RequestExpiredEventArgs e)
-        {
-            try
-            {
-                string str = string.Format(" **** Solicitud expirada (Id_Request: {0}, Id_RequestGenerated: {1})", e.Id_Request, e.Id_RequestGenerated);
-                log.Debug(str);
-            }
-            catch (Exception er)
-            {
-                log.Error("_motorReglas_RequestExpired()", er);
-            }
-        }
+        //private void _motorSolicitudes_RequestExpired(object sender, RequestExpiredEventArgs e)
+        //{
+        //    try
+        //    {
+        //        string str = string.Format(" **** Solicitud expirada (Id_Request: {0}, Id_RequestGenerated: {1})", e.Id_Request, e.Id_RequestGenerated);
+        //        log.Debug(str);
+        //    }
+        //    catch (Exception er)
+        //    {
+        //        log.Error("_motorReglas_RequestExpired()", er);
+        //    }
+        //}
 
         /// <summary>
         /// Método que se lanza cuando tras evaluar una regla se cumple o se deja de cumplir la condición
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _motorSolicitudes_RequestStateChanged(object sender, RequestStateChangedEventArgs e)
-        {
-            try
-            {
-                string str = string.Format("CAMBIO DE ESTADO (Id_Request: {0}, Estado: {1})", e.Id_Request, e.estado);
-                log.Debug(str);
-            }
-            catch (Exception er)
-            {
-                log.Error("_motorSolicitudes_RequestStateChanged()", er);
-            }
-        }
+        //private void _motorSolicitudes_RequestStateChanged(object sender, RequestStateChangedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        string str = string.Format("CAMBIO DE ESTADO (Id_Request: {0}, Estado: {1})", e.Id_Request, e.estado);
+        //        log.Debug(str);
+        //    }
+        //    catch (Exception er)
+        //    {
+        //        log.Error("_motorSolicitudes_RequestStateChanged()", er);
+        //    }
+        //}
 
         /// <summary>
         /// Con cada recepción de datos de los distintos proveedores se lanza el evento, y aqui valida si se cumple la condición
@@ -169,9 +168,7 @@ namespace PrensasService
         {
             try
             {
-                       // Almacenamos el dato en memoria
-                    _datosEnMemoria.AddValue(e.Value.Id_Prensa, e.Value.Type, e.Value.Value, e.Value.Date);
-
+                     
                  // Una vez que ya han llegado todas las variables, y se han almacenado, lanzamos el evaluador solo para las señales que 
                 // han cambiado. No se lanza junto con el anterior, ya que podría dar datos de variables que aún no estén almacenados
                 // en las solicitudes
@@ -203,11 +200,11 @@ namespace PrensasService
 
         private void InicializaSignalR()
         {
-            SignalRManager.GetInstance.OnRequestReceived += SignalRManager_OnRequestReceived;
-          
+                   
 
             SignalRManager.GetInstance.OnClientConnected += GetInstance_OnClientConnected;
             SignalRManager.GetInstance.OnClientDisconnected += GetInstance_OnClientDisconnected;
+            SignalRManager.GetInstance.OnRequestAccepted+= SignalRManager_OnRequestAccepted;
         }
 
         // Desconexiones realizadas a signalr
@@ -227,9 +224,9 @@ namespace PrensasService
 
         #region Events
 
-        private void SignalRManager_OnRequestReceived(string connectionId, int requestId)
+        private void SignalRManager_OnRequestAccepted(string connectionId, int requestId)
         {
-            log.Debug(string.Format("RequestReceived: {0}, {1}", connectionId, requestId));
+            log.Debug(string.Format("RequestAccepted: {0}, {1}", connectionId, requestId));
         }
 
         #endregion
@@ -237,7 +234,7 @@ namespace PrensasService
         #endregion
         #region WCF
 
-        RequestServerWCF _servidorWCF = null;
+       
 
         public bool InicializaWCF()
         {

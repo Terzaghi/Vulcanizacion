@@ -53,8 +53,8 @@ namespace Communication.SignalR
         public event ClientDisconnectedEventHandler OnClientDisconnected;
 
         
-        public event RequestReceivedEventHandler OnRequestReceived;
-        public event ChangeRequestStateEventHandler OnChangeState;
+        public event RequestAcceptedEventHandler OnRequestAccepted;
+    
         
         #endregion
 
@@ -128,43 +128,12 @@ namespace Communication.SignalR
             return stopped;
         }
 
-        #region Server to Client        
-
-        public bool SendRequest(List<int> IdsUsuarios, List<string> DevicesIPs, string jsonNotificacion, DateTime fecha, bool activa)
-        {
-            return RequestHub.SendRequest(IdsUsuarios, DevicesIPs, jsonNotificacion, fecha, activa);
-        }
-
-        //public bool SendChangeState(List<int> IdsUsuarios, List<string> DevicesIPs, RequestToSend notification, StateToSend state)
-        //{
-        //    return RequestHub.SendChangeState(IdsUsuarios, DevicesIPs, notification, state);
-        //}
-
-       
-
-        #endregion
+    
 
 
         #endregion
 
-        #region Hub
-
-  
-        public void Hub_RequestReceived(string connectionId, int notificationId)
-        {
-            RequestReceivedEventHandler notificationReceived = OnRequestReceived;
-            if (notificationReceived != null)
-                notificationReceived(connectionId, notificationId);
-        }
-
-        public void Hub_ChangeState(string connectionId, int notificationId)
-        {
-            ChangeRequestStateEventHandler changeState = OnChangeState;
-            if (changeState != null)
-                changeState(connectionId, notificationId);
-        }
-
-        #endregion
+      
 
         #region Connections
         public void Hub_ClientConnected(string connectionId, string ip, int Id_User)
@@ -241,17 +210,6 @@ namespace Communication.SignalR
             var conexionesInternasSignalR = RequestHub.GetInternalConnections();
 
             var usuariosConectados = this.Connections.GetConnections();
-
-            /*
-            foreach (var con in usuariosConectados)
-            {
-                var obj = conexionesInternasSignalR.Clients.Client(con.Item1);
-                var obj2 = conexionesInternasSignalR.Clients.Client("sdfsdfsadasdf");
-            }
-            */
-            
-
-
             return usuariosConectados;
         }
 

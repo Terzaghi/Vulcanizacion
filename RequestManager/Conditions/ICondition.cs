@@ -10,6 +10,7 @@ namespace RequestManager.Conditions
     public interface ICondition
     {
         ActionForRequest action { get; set; }
+        TagType tagType { get; }
         bool validateCondition(TagValue tagUpdated, TagValue memory);
     }
 }

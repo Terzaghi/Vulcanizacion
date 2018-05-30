@@ -47,7 +47,6 @@
     <Compile Include="DTO\Tag.cs" />
     <Compile Include="DTO\Tag_Provider.cs" />
     <Compile Include="DTO\Tag_Mapping.cs" />
-    <Compile Include="DTO\Usuario_Prensa.cs" />
     <Compile Include="Interfaces\IPrensasDatos.cs" />
     <Compile Include="PrensasDatosDAL.cs" />
     <Compile Include="Tag_MappingDAL.cs" />

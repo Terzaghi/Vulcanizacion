@@ -29,7 +29,7 @@ namespace RequestManager.DTO
                 this.Name = request.Name;
                 this.ShowPopup = request.ShowPopup;
                 this.TagParameters = request.TagParameters;
-                this.Type = request.Type;
+                //this.Type = request.Type;
                 this.TTL = request.TTL;
                 this.DisplayRequiered = request.DisplayRequiered;
             }

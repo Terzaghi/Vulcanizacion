@@ -1,8 +1,9 @@
 ﻿
-using DataProvider.Interfaces;
+using DataProvidersManagement;
 using LoggerManager;
 using Memory.Common;
 using Model.BL.DTO.Enums;
+using RequestManager.Conditions;
 using RequestManager.DTO;
 using RuleManager.Clases;
 using RuleManager.DTO;
@@ -20,296 +21,103 @@ namespace RequestManager
     {
         ILogger log = LogFactory.GetLogger(typeof(RequestMotor));
 
-        private Dictionary<int, Request> _dicRequest { get; set; }
-        private MemoryValues _valoresMemoria;
-        private PendingRequests _solicitudesGeneradas; // Solicitudes generadas y en memoria
-        private IDataProvider _proveedorDatos;
+        private MemoryValues _datosEnMemoria;
+        private PrensaCatalog.PrensaCatalog _catalogPrensa;
+        private DataProvidersManagement.DataProvidersManagement _proveedores;
 
-        private const int TIEMPO_COMPROBACIONES = 60000;  // Tiempo predeterminado 60000 (tiempo mínimo)
-
-
-        private DictionaryActiveRequests _estadoSolicitudesGeneradas;
-        public RequestMotor(ref MemoryValues valoresMemoria, ref IDataProvider proveedorDatos)
+        private PendingRequests _solicitudesGeneradas;
+        public RequestMotor(ref MemoryValues datosEnMemoria, ref PrensaCatalog.PrensaCatalog prensaCatalog, ref DataProvidersManagement.DataProvidersManagement proveedores)
         {
-            this._valoresMemoria = valoresMemoria;
-            this._solicitudesGeneradas = new PendingRequests(this);
-            this._proveedorDatos = proveedorDatos;
+            _datosEnMemoria = datosEnMemoria;
+            _catalogPrensa = prensaCatalog;
+            _proveedores = proveedores;
+        }
+        #region "Pooling Proveedores"
+        public void InicializaTimerTags()
+        {
 
-            _estadoSolicitudesGeneradas = new DictionaryActiveRequests();
-            CargarSolicitudes();
-            // Algunas solicitudes llevan condiciones con comprobaciones de tiempo, inicializamos un hilo que lo comprueba
-            InicializaTimerSolicitudes();
         }
 
-        #region Cargar Solicitudes        
-        /// <summary>
-        /// Carga todas las reglas solicitudes en el sistema
-        /// </summary>
-        private void CargarSolicitudes()
-        {
-            try
-            {
-                log.Debug("Cargando solicitudes del sistema");
 
-                LoadRequests solicitudes = new LoadRequests();
-                List<Request> lstSolicitudes = solicitudes.Cargar();
-
-                // Creamos un diccionario con las solicitudes configuradas en el sistema
-                this._dicRequest = new Dictionary<int, Request>();
-                
-
-                foreach (var solicitud in lstSolicitudes)
-                {
-                    AgregarSolicitud(solicitud.Id_Request);
-                }
-
-                log.Debug("Se han cargado {0} solicitudes", ((lstSolicitudes != null) ? lstSolicitudes.Count.ToString() : "NULL"));
-            }
-            catch (Exception er)
-            {
-                log.Error("CargarSolicitudes()", er);
-            }
-        }
+        #endregion
 
         /// <summary>
-        /// Carga (agrega) una solicitud por Id
+        /// Método al que se llama cada vez que llegan valores al dataprovider para evaluar las reglas aqui cargadas
         /// </summary>
-        /// <param name="Id_Request"></param>
-        private bool AgregarSolicitud(int Id_Request)
+        /// <param name="values"></param>
+        public void EvaluateData(Memory.Common.TagValue value)
         {
-            bool sw = false;
-
             try
             {
-                log.Debug("Agregar solicitud: {0}", Id_Request);
-
-                LoadRequests solicitudes = new LoadRequests();
-                List<Request> lstSolicitudes = solicitudes.CargarSolicitud(Id_Request);
-
-                if (lstSolicitudes != null && lstSolicitudes.Count > 0)
+                Dictionary<TagType, TagValue> memoriesValuesForPrensa = new Dictionary<TagType, TagValue>();
+                RequestManager.Conditions.Conditions evalConditions = new RequestManager.Conditions.Conditions();
+                //Recogemos el valor de cada uno de los tags relacionados con PrensaId
+                foreach (var item in Enum.GetNames(typeof(TagType)))
                 {
-                    // Solo hay una solicitud, devuelve una lista para compartir la estructura del objeto y por si se quiere pasar posteriormente un listado
-                    foreach (var solicitud in lstSolicitudes)
-                    {
-                        sw = AgregarSolicitud(solicitud.Id_Request);
-                        log.Debug("Se ha agregado la solicitud (Id_Request: {0}), al request manager", Id_Request);
-                    }
+                    TagType tagType = (TagType)Enum.Parse(typeof(TagType), item);
+                    var memoryValue = _datosEnMemoria.GetTagValue(value.Id_Prensa, tagType);
+                    memoriesValuesForPrensa.Add(tagType, memoryValue);
+
                 }
-                else
+                //Evaluamos condiciones relacionadas con el tag que ha cambiado
+               
+                List<ICondition> conditionsEvalToApply = evalConditions.GetConditions(value.Type);
+                KeyValuePair<long,PendingRequestLogic> solicitud = this._solicitudesGeneradas.GetAll().Where(x => x.Value.GetIdPrensa == value.Id_Prensa).SingleOrDefault();
+                foreach (ICondition cond in conditionsEvalToApply)
                 {
-                    log.Warning("No se ha agregado ninguna solicitud (Id_Request: {0})", Id_Request);
-                }
-            }
-            catch (Exception er)
-            {
-                log.Error("AgregarSolicitudes()", er);
-            }
-
-            return sw;
-        }
-
-   
-            
-        private bool EliminarSolicitud(int Id_Request)
-        {
-            bool sw = false;
-
-            try
-            {
-                if (this._dicRequest.ContainsKey(Id_Request))
-                {
-                    log.Debug("Solicitud encontrada, se va a proceder a detener (Id_Request: {0})", Id_Request);
-
-                    // Buscamos en la lista de tags vinculados a los que pertenece y los quitamos
-                    Request solicitud;
-                    lock (this._dicRequest)
+                    bool validation = cond.validateCondition(value, memoriesValuesForPrensa[value.Type]);
+                    if (validation == true)
                     {
-                        if (this._dicRequest.TryGetValue(Id_Request, out solicitud))
+                        switch (cond.action)
                         {
-                            this._dicRequest.Remove(Id_Request);
+                            case ActionForRequest.Delete:
+                                this._solicitudesGeneradas.Remove(value.Id_Prensa);
+                                break;
+                            case ActionForRequest.Generated:
+                                this._solicitudesGeneradas.Add(value.Id_Prensa);
+                                break;
                         }
                     }
-
-                    sw = true;
-                }
-                else
-                {
-                    log.Debug("La solicitud que intenta eliminar no está activa en memoria (Id_Request: {0})", Id_Request);
                 }
             }
             catch (Exception er)
             {
-                log.Error("EliminarSolicitud()", er);
-            }
-
-            return sw;
-        }
-
-       
-        #endregion
-        #region Solicitudes con comprobaciones periodicas (contienen condiciones de tiempo)
-        private System.Timers.Timer _timerSolicitudes;
-
-        private void InicializaTimerSolicitudes()
-        {
-            try
-            {
-                int intervalo = TIEMPO_COMPROBACIONES;
-
-                this._timerSolicitudes = new System.Timers.Timer();
-                this._timerSolicitudes.Interval = intervalo;
-                this._timerSolicitudes.Elapsed += _timerSolicitudes_Elapsed;
-
-                // Lanzamos el evento nada más inicializar para comprobarlo
-                _timerSolicitudes_Elapsed(null, null);
-
-                // Iniciamos ya las comprobaciones periódicas
-                this._timerSolicitudes.Start();
-            }
-            catch (Exception er)
-            {
-                log.Error("InicializaTimerReglas()", er);
+                log.Error("EvaluateData()", er);
             }
         }
+     
 
-        private void _timerSolicitudes_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        public PendingRequestLogic GetNextRequest(int id_User)
         {
-            try
-            {
-             
-            }
-            catch (Exception er)
-            {
-                log.Error("_timerReglas_Elapsed()", er);
-            }
+            return this._solicitudesGeneradas.GetNextRequest(id_User);
         }
-        #endregion
-
-        #region Métodos de consulta
-        public List<Request> ListRequest()
+  
+        public void MarkAs_Async(long Id_Request, Estado_Solicitud state, int? id_Usuario, int? id_Device)
         {
-            List<Request> lstResult = new List<Request>();
-
-            try
-            {
-                foreach (KeyValuePair<int, Request> entry in this._dicRequest)
-                {
-                    lstResult.Add(entry.Value);
-                }
-            }
-            catch (Exception er)
-            {
-                log.Error("ListRules()", er);
-            }
-
-            return lstResult;
+            this._solicitudesGeneradas.MarkAs_Async(Id_Request, state, id_Usuario,id_Device);
+        }
+     
+        public void AddPrensa(int id_Prensa)
+        {
+            this._solicitudesGeneradas.Add(id_Prensa);
+        }
+        public void ModifyPrensa()
+        {
+            
+        }
+        public void RemovePrensa(int id_prensa)
+        {
+            this._solicitudesGeneradas.Remove(id_prensa);
+        }
+        public bool isBarcodeValid(string Barcode, int id_prensa)
+        {
+            return this._solicitudesGeneradas.isBarcodeValid(Barcode, id_prensa);
+        }
+        public Tipo_Contramedidas getContramedidas(int id_prensa)
+        {
+            return this._solicitudesGeneradas.getContramedidas(id_prensa);
         }
         
-
-        /// <summary>
-        /// Devuelve el listado de solicitudes pendientes de visualizar según la configuración del usuario
-        /// </summary>
-        /// <param name="Id_User"></param>
-        /// <returns></returns>        
-        public List<RequestGenerated> ListPendingRequest(int? Id_User, int? Id_Device, int elements)
-        {
-            return this._solicitudesGeneradas.GetRequest(Id_User, Id_Device, elements);
-        }
-
-
-        /// <summary>
-        /// Devuelve el conjunto de reglas activas a partir de un listado de ellas
-        /// </summary>
-        public List<Request> ListActiveRequest(List<int> Ids_Request)
-        {
-            List<Request> solicitudes = null;
-
-            try
-            {
-                if (this._dicRequest != null && Ids_Request != null)
-                {
-                    //Obtenemos las solicitudes cumplidas filtradas por Ids_Request
-                    var solicitudesFiltradas = _dicRequest.Where(a => Ids_Request.Any(b => b.Equals(a.Value.Id_Request)) );
-
-                    solicitudes = new List<Request>();
-                    foreach (KeyValuePair<int, Request> dicRequest in solicitudesFiltradas)
-                    {
-                        solicitudes.Add(dicRequest.Value);
-                    }
-                }
-            }
-            catch (Exception er)
-            {
-                log.Error("ListActiveRules.", er);
-            }
-            return solicitudes;
-        }
-
-        /// <summary>
-        /// Devuelve el listado de solicitudes pendientes de visualizar según la configuración de usuario, 
-        /// agregando también las características relativas al estado de la regla (activa o no)
-        /// </summary>
-        /// <param name="Id_User"></param>
-        /// <param name="Id_Device"></param>
-        
-        /// <returns></returns>
-        public List<RequestWithStates> ListPendingRequestsWithState(int? Id_User, int? Id_Device,int elements)
-        {
-            var result = new List<RequestWithStates>();
-
-            try
-            {
-                // Cargamos de la cola de memoria de reglas pendientes de entrega            
-                var lstSolicitudes = this._solicitudesGeneradas.GetNotifications(Id_User, Id_Device, elements);
-
-                // Marcamos el estado según las reglas activas
-                foreach (var solicitud in lstSolicitudes)
-                {
-                    // Buscamos el estado de la solicitud
-                    Estado_Solicitud estado = Estado_Solicitud.Pendiente;
-                    if (solicitud != null)
-                        estado = this._solicitudesGeneradas.GetState((long)solicitud.Id_Request_Generated);
-
-                    // Creamos el objeto con sus propiedades
-                    result.Add(new RequestWithStates()
-                    {
-                        Request = solicitud,
-                        State = estado
-                    });
-                }
-            }
-            catch (Exception er)
-            {
-                log.Error("ListPendingRequestsWithState()", er);
-            }
-
-            return result;
-        }
-
-        public bool IsRequestGeneratedActive(long Id_RequestGenerated)
-        {
-            return this._estadoSolicitudesGeneradas.SolicitudGenerada_IsActive(Id_RequestGenerated);
-        }
-       
-        #endregion
-
-        #region Cambio de estado de una notificación generada (recepción cliente, visualización, etc)
-        public long MarkActionStateAs(long Id_RequestGenerated, Estado_Solicitud state, int? id_Usuario, int? id_Device)
-        {
-            return this._solicitudesGeneradas.MarkAs(Id_RequestGenerated, state, id_Usuario, id_Device);
-        }
-
-        public void MarkActionStateAs_Async(long Id_NotificationGenerated, Estado_Solicitud state, int? id_Usuario, int? id_Device)
-        {
-            this._solicitudesGeneradas.MarkAs_Async(Id_NotificationGenerated, state, id_Usuario, id_Device);
-        }
-
-        public void MarkAllAs_Async(long[] Ids_NotificationGenerated, Estado_Solicitud state, int? id_Usuario,  int? id_Device)
-        {
-            this._solicitudesGeneradas.MarkAllAs_Async(Ids_NotificationGenerated, state, id_Usuario, id_Device);
-        }
-        #endregion
-
         #region Guardar el estado de las variables en memoria durante los reinicios
         /// <summary>
         /// Almacena las variables internas con los valores de señales y notificaciones
@@ -318,7 +126,7 @@ namespace RequestManager
         {
             try
             {
-                log.Debug("PersistirVariables(). Almacenando los valores de las variables relativas al RequestMotor");
+                log.Debug("PersistirVariables(). Almacenando los valores de las variables relativas al RuleMotor");
 
                 // Memoria
                 log.Debug("Serializando valores de las señales");
@@ -331,12 +139,12 @@ namespace RequestManager
 
                 string rutaAplicacion = AppDomain.CurrentDomain.BaseDirectory;
 
-                var serializer = new System.Xml.Serialization.XmlSerializer(this._valoresMemoria.GetType());
+                var serializer = new System.Xml.Serialization.XmlSerializer(this._datosEnMemoria.GetType());
                 using (var writer = System.Xml.XmlWriter.Create(
                     string.Format(@"{0}temp\memory.xml", rutaAplicacion),
                     settings))
                 {
-                    serializer.Serialize(writer, this._valoresMemoria);
+                    serializer.Serialize(writer, this._datosEnMemoria);
                 }
                 // Notificaciones generadas
                 log.Debug("Serializando diccionario de solicitudes");
@@ -348,15 +156,7 @@ namespace RequestManager
                     serializer2.Serialize(writer, this._solicitudesGeneradas);
                 }
 
-                // Reglas activas
-                log.Debug("Serializando estado de las reglas");
-                var serializer3 = new System.Xml.Serialization.XmlSerializer(this._estadoSolicitudesGeneradas.GetType());
-                using (var writer = System.Xml.XmlWriter.Create(
-                    string.Format(@"{0}temp\solicitudesActivas.xml", rutaAplicacion),
-                    settings))
-                {
-                    serializer3.Serialize(writer, this._estadoSolicitudesGeneradas);
-                }
+               
             }
             catch (Exception er)
             {
@@ -377,9 +177,6 @@ namespace RequestManager
                 // Notificaciones generadas
                 RecuperaVariablesSolicitudes();
 
-                // Estado de las solicituedes (solicitudes generadas activas)
-                RecuperaVariablesEstadoSolicitudes();
-
             }
             catch (Exception er)
             {
@@ -387,35 +184,12 @@ namespace RequestManager
             }
         }
 
-        private void RecuperaVariablesMemoria()
+           private void RecuperaVariablesSolicitudes()
         {
             try
             {
                 string rutaAplicacion = AppDomain.CurrentDomain.BaseDirectory;
-                string ruta = string.Format(@"{0}temp\memory.xml", rutaAplicacion);
-
-                if (System.IO.File.Exists(ruta))
-                {
-                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(MemoryValues));
-                    using (var reader = XmlReader.Create(ruta))
-                    {
-                        MemoryValues memory = (MemoryValues)serializer.Deserialize(reader);
-                        this._valoresMemoria.LoadValues(memory.GetAll());
-                    }
-                }
-            }
-            catch (Exception er)
-            {
-                log.Error("RecuperaVariablesMemoria()", er);
-            }
-        }
-
-        private void RecuperaVariablesSolicitudes()
-        {
-            try
-            {
-                string rutaAplicacion = AppDomain.CurrentDomain.BaseDirectory;
-                string ruta = string.Format(@"{0}temp\colaSolicitudes.xml", rutaAplicacion);
+                string ruta = string.Format(@"{0}temp\colaNotificaciones.xml", rutaAplicacion);
 
                 if (System.IO.File.Exists(ruta))
                 {
@@ -433,166 +207,33 @@ namespace RequestManager
             }
             catch (Exception er)
             {
-                log.Error("RecuuperaVariablesNotificaciones()", er);
+                log.Error("RecuuperaVariablesSolicitudes()", er);
             }
         }
 
-        private void RecuperaVariablesEstadoSolicitudes()
+        private void RecuperaVariablesMemoria()
         {
             try
             {
                 string rutaAplicacion = AppDomain.CurrentDomain.BaseDirectory;
-                string ruta = string.Format(@"{0}temp\solicitudesActivas.xml", rutaAplicacion);
+                string ruta = string.Format(@"{0}temp\memory.xml", rutaAplicacion);
 
                 if (System.IO.File.Exists(ruta))
                 {
-                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(DictionaryActiveRequests));
+                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(MemoryValues));
                     using (var reader = System.Xml.XmlReader.Create(ruta))
                     {
-                        // Carga las notificaciones pendientes en el cierre anterior
-                        DictionaryActiveRequests solicitudesPendientes = (DictionaryActiveRequests)serializer.Deserialize(reader);
-
-                        // Agrega al objeto los estados de notificaciones activas
-                        this._estadoSolicitudesGeneradas.LoadValues(solicitudesPendientes.GetAll());
+                       MemoryValues memory = (MemoryValues)serializer.Deserialize(reader);
+                        this._datosEnMemoria.LoadValues(memory.GetAll());
                     }
                 }
             }
             catch (Exception er)
             {
-                log.Error("RecuperaVariablesEstadoReglas()", er);
+                log.Error("RecuperaVariablesMemoria()", er);
             }
-        }
-
-        #endregion
-
-
-        #region Evento de caducidad de la solicitud
-        public event RequestExpiredEventHandler RequestExpired;
-
-        public delegate void RequestExpiredEventHandler(object sender, RequestExpiredEventArgs e);
-
-        public class RequestExpiredEventArgs : EventArgs
-        {
-           
-            public long? Id_Request { get; set; }
-            public long? Id_RequestGenerated { get; set; }
-        }
-
-        public void OnRequestExpired(object sender, RequestExpiredEventArgs e)
-        {
-            RequestExpiredEventHandler handler = RequestExpired;
-            if (handler != null)
-                handler(sender, e);
         }
         #endregion
-
-        #region Evaluación cuando llegan nuevos datos        
-        /// <summary>
-        /// Método al que se llama cada vez que llegan valores al dataprovider para evaluar las reglas aqui cargadas
-        /// </summary>
-        /// <param name="values"></param>
-        public void EvaluateData(Memory.Common.TagValue value)
-        {
-            try
-            {
-                Dictionary<TagType, TagValue> memoriesValuesForPrensa = new Dictionary<TagType, TagValue>();
-                foreach (var item in Enum.GetNames(typeof(TagType)))
-                {
-                  
-                 //probamos git
-                }
-
-
-            }
-            catch (Exception er)
-            {
-                log.Error("EvaluateData()", er);
-            }
-        }
-
-      
-        #endregion
-
-
-
-        #region Evento de cumplimiento de la regla
-
-        public event RequestStateChangedEventHandler RequestStateChanged;
-
-        public delegate void RequestStateChangedEventHandler(object sender, RequestStateChangedEventArgs e);
-
-        public class RequestStateChangedEventArgs : EventArgs
-        {
-            public int Id_Request { get; set; }
-            public Estado_Solicitud estado { get; set; }
-        }
-
-        private void OnRequestStateChanged(object sender, RequestStateChangedEventArgs e)
-        {
-            RequestStateChangedEventHandler handler = RequestStateChanged;
-            if (handler != null)
-                handler(sender, e);
-        }
-
-        #endregion
-
-        #region Gestion del motor de solicitudes
-        /// <summary>
-        /// Indica si el motor de solicitudes está activo 
-        /// </summary>
-        /// <returns></returns>
-        public bool IsActive()
-        {
-            bool sw = false;
-
-            try
-            {
-                // Realente lo que se detiene es la adquisición de datos de los proveedores
-                // al no haber cambios no hay reglas
-                //if (this._proveedorDatos != null)
-                //    sw = this._proveedorDatos.IsActive();
-            }
-            catch (Exception er)
-            {
-                log.Error("IsActive()", er);
-            }
-
-            return sw;
-        }
-        #endregion
-
-        #region Tags
-        /// <summary>
-        /// Devuelve el valor de un tag buscandolo en los proveedores de datos
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <returns></returns>
-        public object ReadValue(string tag)
-        {
-            object result = null;
-
-            try
-            {
-                //// Internamente se puede trabajar con arrays de tags,
-                //// externamente no se utilizan estas peticiones, y de momento no es necesario
-                //// su uso, en caso necesario, exponer el método para mejorar el rendimiento
-                //// reduciendo las peticiones                
-                //string[] tags = new string[] { tag };
-                //var r = this._proveedorDatos.ReadValue(tags);
-
-                //if (r != null && r.Values.Count > 0)
-                //{
-                //    result = r.Values[0];
-                //}
-            }
-            catch (Exception er)
-            {
-                log.Error("ReadValue()", er);
-            }
-            return result;
-        }
-        #endregion
-
         #region Interfaz IDisposeable
         // Indica si ya se llamo al método Dispose. (default = false)
         private Boolean disposed;
@@ -627,7 +268,7 @@ namespace RequestManager
                     this.PersistirVariables();
 
                     // Llamamos al Dispose de todos los RECURSOS MANEJADOS.
-                    //this._proveedoresDatos.Dispose();
+                    //this._proveedores.Dispose();
                 }
 
                 // Aqui finalizamos correctamente los RECURSOS NO MANEJADOS

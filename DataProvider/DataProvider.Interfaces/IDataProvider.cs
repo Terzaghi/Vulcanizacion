@@ -7,7 +7,7 @@
         event DataChangeEventHandler DataChanged;
 
         bool Start();
-        //bool Stop();
+        bool Stop();
 
         //int GetTagProviderId();
 
@@ -15,5 +15,6 @@
 
         //bool AddTag(DTO.TagInfo tag);
         //bool Reload();
+        void Dispose();
     }
 }

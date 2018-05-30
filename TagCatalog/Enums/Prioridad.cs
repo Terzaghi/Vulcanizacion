@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RequestManager.Enums
+namespace PrensaCatalog.Enums
 {
-    public enum RequestType
+    public enum Prioridad
     {
+        Alta,
+        Baja
     }
 }

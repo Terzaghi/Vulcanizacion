@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
 using LoggerManager;
 
-namespace BSHP_PSM.Communication.SignalR.Clases
+namespace Communication.SignalR.Clases
 {
     public class HubHandlingPipelineModule : HubPipelineModule
     {

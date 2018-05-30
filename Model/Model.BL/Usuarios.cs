@@ -325,6 +325,20 @@ namespace Model.BL
 
             return sw;
         }
+        public IList<Tuple<int,int>> ListarPrensasUsuarios()
+        {
+            IList<Tuple<int, int>> lst = new List<Tuple<int, int>>();
+            try
+            {
+                DAL.UsuarioDAL mod = new DAL.UsuarioDAL(_connectionString);
+                lst= mod.ListarPrensasUsuarios();
 
+            }
+            catch (Exception er)
+            {
+                log.Error("ListarPrensasDeUsuario()", er);
+            }
+            return lst;
+        }
     }
 }

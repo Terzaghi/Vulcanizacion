@@ -9,5 +9,6 @@ namespace Model.DAL.Interfaces
     {
         bool Vincular(int Id_User, int Id_Prensa);
         bool Desvincular(int Id_User, int Id_Prensa);
+        IList<Tuple<int, int>> ListarPrensasUsuarios();
     }
 }

@@ -21,6 +21,28 @@ namespace Model.BL
         {
             this._connectionString = connectionString;
         }
+        public int Agregar(Solicitud solicitud)
+        {
+            int id = -1;
+
+            try
+            {
+                log.Debug("Agregar(). Se va a agregar una nueva solicitud");
+
+                SolicitudDAL model = new SolicitudDAL(_connectionString);
+             
+                DAL.DTO.Solicitud solicitudDal = Converter.ConvertToDAL(solicitud);
+             
+               id = model.Agregar(solicitudDal);
+              
+            }
+            catch (Exception er)
+            {
+                log.Error("Agregar()", er);
+            }
+
+            return id;
+        }
         public Solicitud Detalles(int id)
         {
             Solicitud result = null;

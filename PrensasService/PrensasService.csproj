@@ -69,6 +69,10 @@
       <Project>{b64d9e04-66e0-4047-beef-d2f9feca7aaa}</Project>
       <Name>WCF_RequestMotorServer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataProvidersManagement\DataProvidersManagement.csproj">
+      <Project>{da6b8a44-cc83-4302-b25a-801826f256a5}</Project>
+      <Name>DataProvidersManagement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataProvider\DataProvider.Interfaces\DataProvider.Interfaces.csproj">
       <Project>{6D607DCB-58EA-459C-B9EC-AE56D9352C96}</Project>
       <Name>DataProvider.Interfaces</Name>
@@ -93,9 +97,9 @@
       <Project>{521de073-1d7a-4399-97c6-a9545b6e4745}</Project>
       <Name>RequestManager</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TagCatalog\TagCatalog.csproj">
+    <ProjectReference Include="..\TagCatalog\PrensaCatalog.csproj">
       <Project>{62747456-1033-4097-b7be-f7c37ecb35e0}</Project>
-      <Name>TagCatalog</Name>
+      <Name>PrensaCatalog</Name>
     </ProjectReference>
     <ProjectReference Include="..\ValuesMemory\ValuesMemory.csproj">
       <Project>{05E81E17-DC8E-4621-86FC-1DDA69487347}</Project>

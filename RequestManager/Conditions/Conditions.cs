@@ -10,9 +10,11 @@ namespace RequestManager.Conditions
     internal class IsActiveChange:ICondition
     {
         public ActionForRequest action { get; set; }
+        public TagType tagType { get { return TagType.Activa; } }
+
         public bool validateCondition(TagValue tagUpdated, TagValue memory)
         {
-            bool validation=((tagUpdated.Type == TagType.Activa) && (tagUpdated.Value == "1")) && (memory.Value == "0");
+            bool validation=tagUpdated.Value == "1" && memory.Value == "0";
             this.action = ActionForRequest.Generated;
             return validation;
         }
@@ -20,9 +22,12 @@ namespace RequestManager.Conditions
     internal class IsNotActiveChange : ICondition
     {
         public ActionForRequest action { get; set; }
+
+        public TagType tagType { get { return TagType.Activa; } }
+
         public bool validateCondition(TagValue tagUpdated, TagValue memory)
         {
-            bool validation= ((tagUpdated.Type == TagType.Activa) && (tagUpdated.Value == "0")) && (memory.Value == "1");
+            bool validation=  (tagUpdated.Value == "0" && memory.Value == "1");
             this.action = ActionForRequest.Delete;
             return validation;
         }
@@ -30,6 +35,9 @@ namespace RequestManager.Conditions
     internal class IsTempOptChange : ICondition
     {
         public ActionForRequest action { get; set; }
+
+        public TagType tagType { get { return TagType.Temp; } }
+
         public bool validateCondition(TagValue tagUpdated, TagValue memory)
         {
             bool validation= ((tagUpdated.Type == TagType.Temp) && (tagUpdated.Value == "0")) && (memory.Value == "1");
@@ -40,9 +48,10 @@ namespace RequestManager.Conditions
     internal class IsNotTempOptChange : ICondition
     {
         public ActionForRequest action { get; set; }
+        public TagType tagType { get { return TagType.Temp; } }
         public bool validateCondition(TagValue tagUpdated, TagValue memory)
         {
-            bool validation = ((tagUpdated.Type == TagType.Temp) && (tagUpdated.Value == "1")) && (memory.Value == "0");
+            bool validation = tagUpdated.Value == "1" && memory.Value == "0";
             this.action = ActionForRequest.Generated;
             return validation;
         }
@@ -51,7 +60,7 @@ namespace RequestManager.Conditions
     public class Conditions
     {
         private List<ICondition> conditionsToEval;
-        public Conditions()
+        public  Conditions()
         {
             this.conditionsToEval = new List<ICondition>();
             conditionsToEval.Add(new IsActiveChange());
@@ -59,6 +68,10 @@ namespace RequestManager.Conditions
             conditionsToEval.Add(new IsTempOptChange());
             conditionsToEval.Add(new IsNotTempOptChange());
            
+        }
+        public List<ICondition> GetConditions(TagType tagType)
+        {
+            return this.conditionsToEval.Where(x=>x.tagType==tagType).ToList();
         }
     }
 }

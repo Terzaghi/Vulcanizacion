@@ -7,9 +7,8 @@ namespace Communication.Interfaces
 {
     public delegate void ClientConnectedEventHandler(string connectionId, string ip, int Id_User);
     public delegate void ClientDisconnectedEventHandler(string connectionId, string ip, int Id_User);
-    public delegate void RequestReceivedEventHandler(string connectionId, int requestId);
-    public delegate void ChangeRequestStateEventHandler(string connectionId, int requestId);
-    //public delegate void PongReceivedEventHandler(string connectionId);
+    public delegate void RequestAcceptedEventHandler(string connectionId, int requestId);
+   
 
     public interface ICommunication : IDisposable
     {
@@ -19,8 +18,8 @@ namespace Communication.Interfaces
         event ClientDisconnectedEventHandler OnClientDisconnected;
 
         //Notificación recibida por el servidor        
-        event RequestReceivedEventHandler OnRequestReceived;
-        event ChangeRequestStateEventHandler OnChangeState;
+        event RequestAcceptedEventHandler OnRequestAccepted;
+     
 
         //Arranque del servidor
         bool Start();
@@ -30,7 +29,7 @@ namespace Communication.Interfaces
         
         //bool SendNotification(string ip, int notificationId, string message, string json, DateTime fecha);
         // El servidor envia la notificacion a los usuarios/clientes 
-        bool SendRequest(List<int> IdsUsuarios,List<string> DevicesIPs, string jsonNotificacion, DateTime fecha, bool activa);
+        //bool SendRequest(List<int> IdsUsuarios,List<string> DevicesIPs, string jsonNotificacion, DateTime fecha, bool activa);
 
        //bool SendChangeState(List<int> IdsUsuarios,List<string> DevicesIPs, RequestToSend request, StateToSend State);
 
