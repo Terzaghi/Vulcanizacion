@@ -18,22 +18,16 @@ namespace Communication.Interfaces
         event ClientDisconnectedEventHandler OnClientDisconnected;
 
         //Notificación recibida por el servidor        
-        event RequestAcceptedEventHandler OnRequestAccepted;
-     
+        //event RequestAcceptedEventHandler OnRequestAccepted;
 
         //Arranque del servidor
         bool Start();
 
         //Parada del servidor
         bool Stop();
-        
-        //bool SendNotification(string ip, int notificationId, string message, string json, DateTime fecha);
-        // El servidor envia la notificacion a los usuarios/clientes 
-        //bool SendRequest(List<int> IdsUsuarios,List<string> DevicesIPs, string jsonNotificacion, DateTime fecha, bool activa);
 
-       //bool SendChangeState(List<int> IdsUsuarios,List<string> DevicesIPs, RequestToSend request, StateToSend State);
+        bool SendPrensaAbierta(List<int> IdsUsuarios, long Id_Solicitud, int Id_Prensa, string Nombre_Prensa, DateTime fecha);
 
-    
-       
+        bool SendRequestStateChanged(List<int> IdsUsuarios, long Id_Solicitud, int Id_Prensa, StateToSend State);
     }
 }

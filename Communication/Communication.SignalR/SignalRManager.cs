@@ -50,11 +50,7 @@ namespace Communication.SignalR
         #region Events
 
         public event ClientConnectedEventHandler OnClientConnected;
-        public event ClientDisconnectedEventHandler OnClientDisconnected;
-
-        
-        public event RequestAcceptedEventHandler OnRequestAccepted;
-    
+        public event ClientDisconnectedEventHandler OnClientDisconnected;    
         
         #endregion
 
@@ -128,14 +124,24 @@ namespace Communication.SignalR
             return stopped;
         }
 
-    
+        #endregion
 
+        #region Server to Client
+
+        public bool SendPrensaAbierta(List<int> IdsUsuarios, long Id_Solicitud, int Id_Prensa, string Nombre_Prensa, DateTime fecha)
+        {
+            return RequestHub.SendPrensaAbierta(IdsUsuarios, Id_Solicitud, Id_Prensa, Nombre_Prensa, fecha);
+        }
+
+        public bool SendRequestStateChanged(List<int> IdsUsuarios, long Id_Solicitud, int Id_Prensa, StateToSend State)
+        {
+            return RequestHub.SendRequestStateChanged(IdsUsuarios, Id_Solicitud, Id_Prensa, State);
+        }
 
         #endregion
 
-      
-
         #region Connections
+
         public void Hub_ClientConnected(string connectionId, string ip, int Id_User)
         {
             ClientConnectedEventHandler clientConnected = OnClientConnected;
@@ -149,6 +155,7 @@ namespace Communication.SignalR
             if (clientDisconnected != null)
                 clientDisconnected(connectionId, ip, Id_User);
         }
+
         #endregion
 
         #region Métodos Privados
@@ -196,12 +203,9 @@ namespace Communication.SignalR
 
             } while (alive);
         }
-
-
+        
         #endregion
-
-
-
+        
         #endregion
 
         public List<Tuple<string, Connection>> GetConnections()
@@ -210,6 +214,7 @@ namespace Communication.SignalR
             var conexionesInternasSignalR = RequestHub.GetInternalConnections();
 
             var usuariosConectados = this.Connections.GetConnections();
+
             return usuariosConectados;
         }
 

@@ -1,0 +1,418 @@
+<mockup version="1.0" skin="sketch" measuredW="2580" measuredH="1437" mockupW="2570" mockupH="1427">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::iPhone" x="34" y="72" w="-1" h="-1" measuredW="282" measuredH="510" zOrder="0" locked="false" isInGroup="-1"/>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::TextInput" x="78" y="260" w="-1" h="-1" measuredW="194" measuredH="38" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>20</size>
+        <text>C%F3digo%20de%20operario</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Title" x="38" y="10" w="274" h="-1" measuredW="270" measuredH="62" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Login%20Activity</text>
+        <underline>true</underline>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::Button" x="124" y="313" w="-1" h="-1" measuredW="102" measuredH="36" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>20</size>
+        <text>Aceptar</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::iPhone" x="422" y="72" w="-1" h="-1" measuredW="282" measuredH="510" zOrder="4" locked="false" isInGroup="-1"/>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::Title" x="426" y="10" w="274" h="-1" measuredW="274" measuredH="62" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Menu%20Activity</text>
+        <underline>true</underline>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::Button" x="459" y="255" w="207" h="36" measuredW="127" measuredH="36" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>20</size>
+        <text>Solicitudes</text>
+      </controlProperties>
+    </control>
+    <control controlID="14" controlTypeID="com.balsamiq.mockups::Button" x="459" y="291" w="207" h="36" measuredW="150" measuredH="36" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>20</size>
+        <text>Carga%20manual</text>
+      </controlProperties>
+    </control>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::Button" x="459" y="327" w="207" h="36" measuredW="212" measuredH="36" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>20</size>
+        <text>Deshabilitar%20prensa</text>
+      </controlProperties>
+    </control>
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Button" x="459" y="363" w="207" h="36" measuredW="134" measuredH="36" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>20</size>
+        <text>Crear%20aviso</text>
+      </controlProperties>
+    </control>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::TextArea" x="356" y="597" w="414" h="191" measuredW="200" measuredH="140" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>-%20Operaciones%20visibles%20por%20permisos%20%28Roles%20de%20usuarios%29%3A%0A%09-%20Solicitudes%3A%20Cargador%0A%09-%20Carga%20manual%3A%20Cargador%0A%09-%20Habilitar%20prensa%3A%20Encargado/Cambiador%0A%09-%20Deshabilitar%20prensa%3A%20Cargador/Encargado/Mantenimiento%0A%09-%20Validaci%F3n%20de%20operaciones%3A%20Encargado%0A%09-%20Avisos%3A%20Encargado%0A%09-%20Crear%20aviso%3A%20Encargado/Cargador%0A%09-%20Cambiar%20bladder%3A%20Cambiador</text>
+      </controlProperties>
+    </control>
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::TextArea" x="10" y="597" w="331" h="140" measuredW="200" measuredH="140" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>btnLoginAccept_Click%28%29%0A1-%20Id_User%20%3D%20WebApi.GetUserByIdentityCode%28id%29%0A2-%20Id_Device%20%3D%20WebApi.GetDeviceByIp%28ip%29%0A3-%20Token.Generate%28Id_User%2C%20Id_Device%29%0A4-%20SignalRManager.Start%28token%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="20" controlTypeID="com.balsamiq.mockups::iPhone" x="851" y="72" w="-1" h="-1" measuredW="282" measuredH="510" zOrder="12" locked="false" isInGroup="-1"/>
+    <control controlID="21" controlTypeID="com.balsamiq.mockups::Title" x="825" y="10" w="333" h="-1" measuredW="324" measuredH="62" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Request%20Activity</text>
+        <underline>true</underline>
+      </controlProperties>
+    </control>
+    <control controlID="23" controlTypeID="com.balsamiq.mockups::Button" x="888" y="448" w="207" h="36" measuredW="150" measuredH="36" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>20</size>
+        <text>Carga%20manual</text>
+      </controlProperties>
+    </control>
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::TextArea" x="785" y="597" w="414" h="51" measuredW="200" measuredH="140" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>-%20Carga%20manual%3A%20accede%20a%20CargaPrensaActivity%20sin%20pasar%20Intent.PutExtra%28%22Id_Solicitud_Extra%22%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::PointyButton" x="605" y="176" w="-1" h="-1" measuredW="61" measuredH="28" zOrder="16" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Logout</text>
+      </controlProperties>
+    </control>
+    <control controlID="31" controlTypeID="com.balsamiq.mockups::TextArea" x="888" y="276" w="207" h="66" measuredW="200" measuredH="140" zOrder="17" locked="false" isInGroup="-1">
+      <controlProperties>
+        <align>center</align>
+        <size>20</size>
+        <text>Prensa%2042%0ACV%20245</text>
+      </controlProperties>
+    </control>
+    <control controlID="32" controlTypeID="com.balsamiq.mockups::Alert" x="1270" y="245" w="-1" h="-1" measuredW="200" measuredH="127" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Prensa%2042%0A%BFAceptar%20solicitud%3F%0ASi%2C%20No</text>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::Arrow" x="1095" y="304" w="167" h="10" measuredW="150" measuredH="100" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <curvature>0</curvature>
+        <direction>top</direction>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::TextArea" x="1148" y="448" w="414" h="134" measuredW="200" measuredH="140" zOrder="20" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>-%20Informa%20al%20resto%20de%20PDAs%20que%20la%20solicitud%20ha%20sido%20asignada%20para%20qeu%20no%20la%20ofrezcan.%0A-%20Establece%20el%20estado%20de%20la%20solicitud%20a%20asignada.%0A-%20Accede%20a%20la%20actividad%20CargaPrensaActivity%20pasando%20el%20Id%20de%20la%20solicitud%20o%20el%20objeto%20Parcelable%3A%20Intent.PutExtra%28%22Id_Solicitud_Extra%22%2C%2010000%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::Arrow" x="1319" y="363" w="10" h="75" measuredW="150" measuredH="100" zOrder="21" locked="false" isInGroup="-1">
+      <controlProperties>
+        <curvature>0</curvature>
+        <direction>top</direction>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="36" controlTypeID="com.balsamiq.mockups::iPhone" x="87" y="887" w="-1" h="-1" measuredW="282" measuredH="510" zOrder="22" locked="false" isInGroup="-1"/>
+    <control controlID="37" controlTypeID="com.balsamiq.mockups::Title" x="10" y="824" w="436" h="-1" measuredW="426" measuredH="62" zOrder="23" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Carga%20Prensa%20Activity</text>
+        <underline>true</underline>
+      </controlProperties>
+    </control>
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::Label" x="119" y="991" w="-1" h="-1" measuredW="110" measuredH="25" zOrder="24" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Solicitud%3A%2010000</text>
+      </controlProperties>
+    </control>
+    <control controlID="40" controlTypeID="com.balsamiq.mockups::Label" x="119" y="1018" w="-1" h="-1" measuredW="52" measuredH="25" zOrder="25" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Prensa%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="41" controlTypeID="com.balsamiq.mockups::TextInput" x="183" y="1015" w="-1" h="-1" measuredW="110" measuredH="29" zOrder="26" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Barcode%20prensa</text>
+      </controlProperties>
+    </control>
+    <control controlID="42" controlTypeID="com.balsamiq.mockups::Label" x="119" y="1046" w="-1" h="-1" measuredW="64" measuredH="25" zOrder="27" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Cubierta%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="43" controlTypeID="com.balsamiq.mockups::TextInput" x="183" y="1043" w="-1" h="-1" measuredW="121" measuredH="29" zOrder="28" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Barcode%20cubierta</text>
+      </controlProperties>
+    </control>
+    <control controlID="44" controlTypeID="com.balsamiq.mockups::FieldSet" x="128" y="1074" w="200" h="89" measuredW="200" measuredH="170" zOrder="29" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Contramedidas</text>
+      </controlProperties>
+    </control>
+    <control controlID="45" controlTypeID="com.balsamiq.mockups::TextInput" x="134" y="1098" w="-1" h="-1" measuredW="121" measuredH="29" zOrder="30" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Barcode%20pinchado</text>
+      </controlProperties>
+    </control>
+    <control controlID="46" controlTypeID="com.balsamiq.mockups::TextInput" x="134" y="1126" w="-1" h="-1" measuredW="113" measuredH="29" zOrder="31" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Barcode%20pintado</text>
+      </controlProperties>
+    </control>
+    <control controlID="47" controlTypeID="com.balsamiq.mockups::Label" x="119" y="1163" w="-1" h="-1" measuredW="126" measuredH="25" zOrder="32" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Siguiente%20cubierta%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="48" controlTypeID="com.balsamiq.mockups::TextInput" x="119" y="1186" w="-1" h="-1" measuredW="121" measuredH="29" zOrder="33" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Barcode%20cubierta</text>
+      </controlProperties>
+    </control>
+    <control controlID="49" controlTypeID="com.balsamiq.mockups::Button" x="124" y="1248" w="204" h="27" measuredW="112" measuredH="28" zOrder="34" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>13</size>
+        <text>Cargar%20prensa</text>
+      </controlProperties>
+    </control>
+    <control controlID="53" controlTypeID="com.balsamiq.mockups::Button" x="124" y="1282" w="204" h="27" measuredW="145" measuredH="28" zOrder="35" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>13</size>
+        <text>Deshabilitar%20prensa</text>
+      </controlProperties>
+    </control>
+    <control controlID="54" controlTypeID="com.balsamiq.mockups::Arrow" x="304" y="1025" w="94" h="10" measuredW="150" measuredH="100" zOrder="36" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="55" controlTypeID="com.balsamiq.mockups::Label" x="405" y="1017" w="-1" h="-1" measuredW="249" measuredH="25" zOrder="37" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Visible%20si%20la%20carga%20es%20mediante%20solicitud</text>
+      </controlProperties>
+    </control>
+    <control controlID="56" controlTypeID="com.balsamiq.mockups::Arrow" x="328" y="1118" w="70" h="10" measuredW="150" measuredH="100" zOrder="38" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="57" controlTypeID="com.balsamiq.mockups::Label" x="405" y="1110" w="-1" h="-1" measuredW="393" measuredH="25" zOrder="39" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Visible%20si%20hay%20contramedidas%20para%20la%20prensa%20o%20para%20la%20cubierta</text>
+      </controlProperties>
+    </control>
+    <control controlID="58" controlTypeID="com.balsamiq.mockups::Arrow" x="240" y="1194" w="158" h="10" measuredW="150" measuredH="100" zOrder="40" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="59" controlTypeID="com.balsamiq.mockups::Label" x="412" y="1186" w="326" h="25" measuredW="297" measuredH="25" zOrder="41" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Asignaci%F3n%20de%20la%20siguiente%20cubierta%20a%20la%20prensa</text>
+      </controlProperties>
+    </control>
+    <control controlID="61" controlTypeID="com.balsamiq.mockups::Arrow" x="328" y="1256" w="70" h="10" measuredW="150" measuredH="100" zOrder="42" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="62" controlTypeID="com.balsamiq.mockups::Label" x="411" y="1250" w="-1" h="-1" measuredW="297" measuredH="25" zOrder="43" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Cierre%20de%20solicitud%20y%20guardado%20de%20traza%20en%20BD</text>
+      </controlProperties>
+    </control>
+    <control controlID="64" controlTypeID="com.balsamiq.mockups::Label" x="87" y="1412" w="-1" h="-1" measuredW="688" measuredH="25" zOrder="44" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Si%20se%20sale%20de%20la%20solicitud%2C%20cambiar%20el%20estado%20a%20%22Pendiente%22%20para%20que%20cualquier%20otra%20persona%20pueda%20aceptarla.</text>
+      </controlProperties>
+    </control>
+    <control controlID="65" controlTypeID="com.balsamiq.mockups::Arrow" x="328" y="1290" w="70" h="10" measuredW="150" measuredH="100" zOrder="45" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="66" controlTypeID="com.balsamiq.mockups::Label" x="405" y="1282" w="-1" h="-1" measuredW="604" measuredH="25" zOrder="46" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Acceso%20a%20actividad%20DeshabilitarPrensaActivity%20%28al%20deshabilitar%20la%20prensa%20se%20elimina%20la%20solicitud%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="67" controlTypeID="com.balsamiq.mockups::iPhone" x="1207" y="871" w="-1" h="-1" measuredW="282" measuredH="510" zOrder="47" locked="false" isInGroup="-1"/>
+    <control controlID="68" controlTypeID="com.balsamiq.mockups::Title" x="1061" y="809" w="573" h="-1" measuredW="550" measuredH="62" zOrder="48" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Deshabilitar%20Prensa%20Activity</text>
+        <underline>true</underline>
+      </controlProperties>
+    </control>
+    <control controlID="69" controlTypeID="com.balsamiq.mockups::Label" x="1239" y="979" w="-1" h="-1" measuredW="52" measuredH="25" zOrder="49" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Prensa%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="70" controlTypeID="com.balsamiq.mockups::ComboBox" x="1239" y="1004" w="-1" h="-1" measuredW="94" measuredH="25" zOrder="50" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Prensa%2042</text>
+      </controlProperties>
+    </control>
+    <control controlID="71" controlTypeID="com.balsamiq.mockups::Label" x="1239" y="1036" w="-1" h="-1" measuredW="52" measuredH="25" zOrder="51" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Motivo%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="72" controlTypeID="com.balsamiq.mockups::ComboBox" x="1239" y="1061" w="-1" h="-1" measuredW="120" measuredH="25" zOrder="52" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Falta%20cubierta</text>
+      </controlProperties>
+    </control>
+    <control controlID="73" controlTypeID="com.balsamiq.mockups::Label" x="1239" y="1096" w="-1" h="-1" measuredW="77" measuredH="25" zOrder="53" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Comentario%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="74" controlTypeID="com.balsamiq.mockups::TextArea" x="1239" y="1121" w="218" h="76" measuredW="200" measuredH="140" zOrder="54" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%20</text>
+      </controlProperties>
+    </control>
+    <control controlID="75" controlTypeID="com.balsamiq.mockups::VerticalScrollBar" x="1441" y="1121" w="-1" h="76" measuredW="16" measuredH="100" zOrder="55" locked="false" isInGroup="-1"/>
+    <control controlID="76" controlTypeID="com.balsamiq.mockups::Button" x="1239" y="1257" w="218" h="28" measuredW="99" measuredH="28" zOrder="56" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Deshabilitar</text>
+      </controlProperties>
+    </control>
+    <control controlID="77" controlTypeID="com.balsamiq.mockups::Arrow" x="1333" y="1011" w="171" h="10" measuredW="150" measuredH="100" zOrder="57" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="78" controlTypeID="com.balsamiq.mockups::Label" x="1519" y="1003" w="-1" h="-1" measuredW="137" measuredH="25" zOrder="58" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>ComboBox%20de%20prensas</text>
+      </controlProperties>
+    </control>
+    <control controlID="79" controlTypeID="com.balsamiq.mockups::Arrow" x="1359" y="1068" w="145" h="10" measuredW="150" measuredH="100" zOrder="59" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="80" controlTypeID="com.balsamiq.mockups::Label" x="1519" y="1060" w="-1" h="-1" measuredW="184" measuredH="25" zOrder="60" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Motivos%20visibles%20por%20permisos</text>
+      </controlProperties>
+    </control>
+    <control controlID="81" controlTypeID="com.balsamiq.mockups::Arrow" x="1457" y="1266" w="47" h="10" measuredW="150" measuredH="100" zOrder="61" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="82" controlTypeID="com.balsamiq.mockups::Label" x="1519" y="1258" w="-1" h="-1" measuredW="249" measuredH="25" zOrder="62" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>WCF%20-%3E%20DeshabilitarPrensa%28Id_Prensa%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="83" controlTypeID="com.balsamiq.mockups::TextArea" x="1141" y="1381" w="414" h="48" measuredW="200" measuredH="140" zOrder="63" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13576743</color>
+        <text>TODO%20Acciones%3A%20Cuando%20se%20habilita%20o%20deshabilita%20prensas%2C%20mandar%20un%20aviso%20a%20un%20cierto%20rol</text>
+      </controlProperties>
+    </control>
+    <control controlID="84" controlTypeID="com.balsamiq.mockups::iPhone" x="1946" y="864" w="-1" h="-1" measuredW="282" measuredH="510" zOrder="64" locked="false" isInGroup="-1"/>
+    <control controlID="85" controlTypeID="com.balsamiq.mockups::Title" x="1800" y="802" w="573" h="-1" measuredW="487" measuredH="62" zOrder="65" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Habilitar%20Prensa%20Activity</text>
+        <underline>true</underline>
+      </controlProperties>
+    </control>
+    <control controlID="86" controlTypeID="com.balsamiq.mockups::Label" x="1978" y="972" w="-1" h="-1" measuredW="52" measuredH="25" zOrder="66" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Prensa%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="87" controlTypeID="com.balsamiq.mockups::ComboBox" x="1978" y="997" w="-1" h="-1" measuredW="94" measuredH="25" zOrder="67" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Prensa%2042</text>
+      </controlProperties>
+    </control>
+    <control controlID="88" controlTypeID="com.balsamiq.mockups::Label" x="1978" y="1029" w="-1" h="-1" measuredW="52" measuredH="25" zOrder="68" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Motivo%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="89" controlTypeID="com.balsamiq.mockups::ComboBox" x="1978" y="1054" w="-1" h="-1" measuredW="120" measuredH="25" zOrder="69" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Falta%20cubierta</text>
+      </controlProperties>
+    </control>
+    <control controlID="90" controlTypeID="com.balsamiq.mockups::Label" x="1978" y="1089" w="-1" h="-1" measuredW="77" measuredH="25" zOrder="70" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Comentario%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="91" controlTypeID="com.balsamiq.mockups::TextArea" x="1978" y="1114" w="218" h="76" measuredW="200" measuredH="140" zOrder="71" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%20</text>
+      </controlProperties>
+    </control>
+    <control controlID="92" controlTypeID="com.balsamiq.mockups::VerticalScrollBar" x="2180" y="1114" w="-1" h="76" measuredW="16" measuredH="100" zOrder="72" locked="false" isInGroup="-1"/>
+    <control controlID="93" controlTypeID="com.balsamiq.mockups::Button" x="1978" y="1250" w="218" h="28" measuredW="99" measuredH="28" zOrder="73" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Deshabilitar</text>
+      </controlProperties>
+    </control>
+    <control controlID="95" controlTypeID="com.balsamiq.mockups::Label" x="2258" y="996" w="-1" h="-1" measuredW="263" measuredH="25" zOrder="74" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Misma%20actividad%20que%20Deshabilitar%20Prensa</text>
+      </controlProperties>
+    </control>
+    <control controlID="96" controlTypeID="com.balsamiq.mockups::Arrow" x="2098" y="1061" w="145" h="10" measuredW="150" measuredH="100" zOrder="75" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="97" controlTypeID="com.balsamiq.mockups::Label" x="2258" y="1053" w="-1" h="-1" measuredW="322" measuredH="25" zOrder="76" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Motivo%20de%20deshabilitaci%F3n%3A%20visible%20pero%20no%20editable</text>
+      </controlProperties>
+    </control>
+    <control controlID="98" controlTypeID="com.balsamiq.mockups::Arrow" x="2196" y="1259" w="47" h="10" measuredW="150" measuredH="100" zOrder="77" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="99" controlTypeID="com.balsamiq.mockups::Label" x="2258" y="1251" w="-1" h="-1" measuredW="231" measuredH="25" zOrder="78" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>WCF%20-%3E%20HabilitarPrensa%28Id_Prensa%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="100" controlTypeID="com.balsamiq.mockups::TextArea" x="1880" y="1374" w="414" h="48" measuredW="200" measuredH="140" zOrder="79" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13576743</color>
+        <text>TODO%20Acciones%3A%20Cuando%20se%20habilita%20o%20deshabilita%20prensas%2C%20mandar%20un%20aviso%20a%20un%20cierto%20rol</text>
+      </controlProperties>
+    </control>
+    <control controlID="118" controlTypeID="com.balsamiq.mockups::Arrow" x="2196" y="1147" w="47" h="10" measuredW="150" measuredH="100" zOrder="80" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="119" controlTypeID="com.balsamiq.mockups::Label" x="2258" y="1139" w="-1" h="-1" measuredW="165" measuredH="25" zOrder="81" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Comentario%20de%20habilitaci%F3n</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

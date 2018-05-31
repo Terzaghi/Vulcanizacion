@@ -10,6 +10,7 @@ using System.Collections;
 using System.Linq;
 
 using LoggerManager;
+using Communication.SignalR.DTO;
 
 namespace Communication.SignalR
 {
@@ -265,6 +266,142 @@ namespace Communication.SignalR
 
         #region Server to Client (métodos estáticos)
 
+        /// <summary>
+        /// Envía una notificación a los usuarios indicando que una prensa se ha abierto, con la Id de solicitud correspondiente
+        /// </summary>
+        /// <param name="IdsUsuarios">Listado de usuarios a los que enviar la notificación</param>
+        /// <param name="Id_Solicitud">Id de la solicitud generada</param>
+        /// <param name="Id_Prensa">Id de la prensa que ha abierto</param>
+        /// <param name="Nombre_Prensa">Nombre de la prensa que ha abierto</param>
+        /// <param name="fecha">Fecha de apertura</param>
+        /// <returns>Envío realizado</returns>
+        public static bool SendPrensaAbierta(List<int> IdsUsuarios, long Id_Solicitud, int Id_Prensa, string Nombre_Prensa, DateTime fecha)
+        {
+            ILogger log = LogFactory.GetLogger(typeof(RequestHub));
+
+            bool sw = false;
+
+            try
+            {
+                log.Debug("Acceso al método SendPrensaAbierta. Usuarios: [{0}], Prensa: [{1}], Solicitud: [{2}]",
+                    IdsUsuarios != null ? string.Join(",", IdsUsuarios) : "null",
+                    Id_Prensa, Id_Solicitud);
+
+                var hubContext = GlobalHost.ConnectionManager.GetHubContext<RequestHub>();
+
+                #region Usuarios
+
+                if (IdsUsuarios != null && IdsUsuarios.Count > 0)
+                {
+                    log.Debug("SendPrensaAbierta. Enviando notificación a los usuarios...");
+
+                    foreach (int idUsuario in IdsUsuarios)
+                    {
+                        log.Debug("SendPrensaAbierta. Enviando notificación para el usuario: {0}", idUsuario);
+
+                        List<string> lstConexiones = SignalRManager.GetInstance.Connections.GetConnectionsIdByUser((int)idUsuario);
+
+                        if (lstConexiones != null && lstConexiones.Count > 0)
+                        {
+                            foreach (string connectionId in lstConexiones)
+                            {
+                                if (connectionId != null && connectionId.Length > 0)
+                                {
+                                    hubContext.Clients.Client(connectionId).SendPrensaAbierta(Id_Solicitud, Id_Prensa, Nombre_Prensa, fecha);
+
+                                    sw = true;
+
+                                    log.Debug("SendPrensaAbierta. Enviada notificación para el usuario: {0} (Id: {1})", connectionId, idUsuario);
+                                }
+                                else
+                                {
+                                    log.Warning("SendPrensaAbierta. Sin datos de la conexión (Id: {0})", idUsuario);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // El usuario no está en la lista de usuarios conectados 
+                            log.Debug("SendPrensaAbierta. No se puede mandar el mensaje al usuario ya que no está autenticado (Id: {0})", idUsuario);
+                        }
+                    }
+                }
+
+                #endregion
+            }
+            catch (Exception er)
+            {
+                log.Error("SendPrensaAbierta()", er);
+            }
+
+            return sw;
+        }
+
+        /// <summary>
+        /// Envía una notificación de cambio de estado de una solicitud
+        /// </summary>
+        /// <param name="IdsUsuarios">Listado de usuarios a los que enviar la notificación</param>
+        /// <param name="Id_Solicitud">Id de la solicitud generada</param>
+        /// <param name="Id_Prensa">Id de la prensa</param>
+        /// <param name="State">Estado de la solicitud</param>
+        /// <returns>Envío realizado</returns>
+        public static bool SendRequestStateChanged(List<int> IdsUsuarios, long Id_Solicitud, int Id_Prensa, StateToSend State)
+        {
+            ILogger log = LogFactory.GetLogger(typeof(RequestHub));
+
+            bool sw = false;
+
+            try
+            {
+                var hubContext = GlobalHost.ConnectionManager.GetHubContext<RequestHub>();
+
+                #region Usuarios
+
+                if (IdsUsuarios != null && IdsUsuarios.Count > 0)
+                {
+                    log.Debug("SendRequestStateChanged. Enviando cambio de estado a los usuarios...");
+
+                    // Envío unos usuarios por identificador
+                    foreach (int idUsuario in IdsUsuarios)
+                    {
+                        log.Debug("SendRequestStateChanged. Enviando cambio de estado para el usuario: {0}", idUsuario);
+
+                        List<string> lstConexiones = SignalRManager.GetInstance.Connections.GetConnectionsIdByUser((int)idUsuario);
+
+                        if (lstConexiones != null && lstConexiones.Count > 0)
+                        {
+                            foreach (string connectionId in lstConexiones)
+                            {
+                                if (connectionId != null && connectionId.Length > 0)
+                                {
+                                    hubContext.Clients.Client(connectionId).SendRequestStateChanged(Id_Solicitud, Id_Prensa, State);
+
+                                    log.Debug("SendRequestStateChanged. Enviada cambio de estado para el usuario: {0} (Id: {1})", connectionId, idUsuario);
+                                }
+                                else
+                                {
+                                    log.Warning("SendRequestStateChanged. Sin datos de la conexión (Id: {0})", idUsuario);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // El usuario no está en la lista de usuarios conectados 
+                            log.Debug("SendRequestStateChanged. No se puede mandar el cambio de estado al usuario ya que no está autenticado (Id: {0})", idUsuario);
+                        }
+                    }
+                    sw = true;
+                }
+                #endregion
+            }
+            catch (Exception er)
+            {
+                log.Error("SendRequestStateChanged()", er);
+            }
+
+            return sw;
+        }
+
         public static bool Ping(string connectionId)
         {
             var sent = false;
@@ -285,6 +422,7 @@ namespace Communication.SignalR
             }
             return sent;
         }
+        
         #endregion
 
         #region Client to Server
@@ -297,19 +435,10 @@ namespace Communication.SignalR
             SignalRManager.GetInstance.Connections.PongReceived(Context.ConnectionId);
         }
 
-        /// <summary>
-        /// Método para comprobar que el servidor está funcionando y responde
-        /// </summary>
-        /// <returns></returns>
-        public DateTime Test()
-        {
-            return DateTime.Now;
-        }
         #endregion
-
-
-
+        
         #region Información
+
         /// <summary>
         /// Devuelve la lista de usuarios conectados y configuraciones de los mismos
         /// </summary>
@@ -322,7 +451,8 @@ namespace Communication.SignalR
             var Clientes = context.Clients;
 
             return context;
-        }        
+        }
+             
         #endregion
 
     }

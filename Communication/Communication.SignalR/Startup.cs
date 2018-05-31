@@ -1,4 +1,4 @@
-﻿using BSHP_PSM.Communication.SignalR.Clases;
+﻿using Communication.SignalR.Clases;
 using LoggerManager;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Cors;

@@ -84,7 +84,6 @@
   <ItemGroup>
     <Compile Include="Clases\ActiveConnections.cs" />
     <Compile Include="Clases\HubHandlingPipelineModule.cs" />
-    <Compile Include="DTO\RequestToSend.cs" />
     <Compile Include="DTO\StateToSend.cs" />
     <Compile Include="Interfaces\ICommunication.cs" />
     <Compile Include="RequestHub.cs" />
