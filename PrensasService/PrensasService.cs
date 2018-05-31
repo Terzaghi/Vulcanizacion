@@ -1,5 +1,6 @@
 ﻿using Common.Security;
 using Communication.SignalR;
+using Communication.SignalR_Tester;
 using LoggerManager;
 using RequestManager;
 using System;
@@ -20,7 +21,7 @@ namespace PrensasService
         private readonly string _configurationInfo; //Configuración del servicio
 
         MemoryValues _datosEnMemoria;
-        PrensaCatalog.PrensaCatalog _catalogoPrensas;              // Catálogo de señales configuradas
+        PrensaCatalog.Prensas _catalogoPrensas;              // Catálogo de señales configuradas
         RequestMotor _motorSolicitudes;  // Validación y lanzamiento de las solicitudes
         DataProvidersManagement.DataProvidersManagement _proveedores;
         RequestServerWCF _servidorWCF;
@@ -90,7 +91,7 @@ namespace PrensasService
 
                 log.Information("Inicializando sistema");
                 
-                this._catalogoPrensas = new PrensaCatalog.PrensaCatalog();
+                this._catalogoPrensas = new PrensaCatalog.Prensas();
                 this._datosEnMemoria = new MemoryValues();
 
                 this._proveedores = new DataProvidersManagement.DataProvidersManagement(new DataProvider.TManager.Provider(ref _datosEnMemoria));
@@ -288,6 +289,59 @@ namespace PrensasService
             catch (Exception er)
             {
                 log.Error("ValidarSignalR()", er);
+            }
+        }
+
+        private void ReiniciarAplicacion()
+        {
+            try
+            {
+                log.Debug("Persistiendo el estado actual de la aplicación");
+                this._motorSolicitudes.PersistirVariables();
+
+                // Por si algo tarda en liberarse o liberar el puerto
+                log.Debug("Liberando recursos");
+                this._motorSolicitudes.Dispose();
+                //this._webApi.Dispose();
+                this._servidorWCF.Dispose();
+                this._proveedores.Dispose();
+
+                log.Information("REINICIANDO EL SERVICIO");
+                //Application.Restart();
+
+
+                RestartService();
+                //System.Diagnostics.Process.Start(Application.ExecutablePath);
+                //Application.Exit();
+            }
+            catch (Exception er)
+            {
+                log.Error("ReiniciarAplicacion()", er);
+            }
+        }
+
+        private void RestartService()
+        {
+            try
+            {
+                var service = new ServiceController(ServiceName);
+
+                //Se establece un timeout tanto para parar el servicio como para iniciarlo de 30 segundos
+                TimeSpan timeout = TimeSpan.FromMilliseconds(30000);
+
+                log.Debug("Parando el servicio");
+                service.Stop();
+                service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+
+                log.Debug("Iniciando el servicio");
+                service.Start();
+                service.WaitForStatus(ServiceControllerStatus.Running, timeout);
+
+                log.Debug("Servicio iniciado");
+            }
+            catch (Exception er)
+            {
+                log.Error("RestartService()", er);
             }
         }
 

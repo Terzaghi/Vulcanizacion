@@ -1,5 +1,4 @@
 ﻿using Model.BL.DTO.Enums;
-using RuleManager.DTO;
 using System.Collections.Generic;
 using System.ServiceModel;
 

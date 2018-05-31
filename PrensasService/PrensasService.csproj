@@ -69,6 +69,10 @@
       <Project>{F37957F3-08BA-449C-AA8D-C2AC07D8AC1B}</Project>
       <Name>Communication.SignalR</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Communication\Communication.SignalR_Tester\Communication.SignalR_Tester.csproj">
+      <Project>{60A10D4E-66A3-4778-AB16-A5786E718D75}</Project>
+      <Name>Communication.SignalR_Tester</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Communication\WCF\WCF_RuleMotorServer\WCF_RequestMotorServer.csproj">
       <Project>{b64d9e04-66e0-4047-beef-d2f9feca7aaa}</Project>
       <Name>WCF_RequestMotorServer</Name>

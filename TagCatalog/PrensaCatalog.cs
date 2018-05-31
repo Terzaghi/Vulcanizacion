@@ -2,22 +2,17 @@
 using PrensaCatalog.DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 
 namespace PrensaCatalog
 {
-    public class PrensaCatalog
+    public class Prensas
     {
-        ILogger log = LogFactory.GetLogger(typeof(PrensaCatalog));
+        ILogger log = LogFactory.GetLogger(typeof(Prensas));
 
         public Dictionary<int, Prensa> _caracteristicasPrensa { get; set; }  // Key: id_Prensa; Value: RM.DTO.Prensa
         public Dictionary<int, List<int>> _prensasUsuario { get; set; } //Key:Id_User; Value: List<Id_Prensa>
 
-        public PrensaCatalog()
+        public Prensas()
         {
             LoadPrensas();
             LoadPrensasUsuario();

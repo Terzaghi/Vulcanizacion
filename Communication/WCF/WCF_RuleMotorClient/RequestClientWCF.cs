@@ -1,7 +1,6 @@
 ﻿using LoggerManager;
 using Model.BL.DTO.Enums;
 using Newtonsoft.Json;
-using RuleManager.DTO;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

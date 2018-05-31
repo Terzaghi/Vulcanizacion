@@ -15,11 +15,11 @@ namespace RequestManager
         ILogger log = LogFactory.GetLogger(typeof(RequestMotor));
 
         private MemoryValues _datosEnMemoria;
-        private PrensaCatalog.PrensaCatalog _catalogPrensa;
+        private PrensaCatalog.Prensas _catalogPrensa;
         private DataProvidersManagement.DataProvidersManagement _proveedores;
 
         private PendingRequests _solicitudesGeneradas;
-        public RequestMotor(ref MemoryValues datosEnMemoria, ref PrensaCatalog.PrensaCatalog prensaCatalog, ref DataProvidersManagement.DataProvidersManagement proveedores)
+        public RequestMotor(ref MemoryValues datosEnMemoria, ref PrensaCatalog.Prensas prensaCatalog, ref DataProvidersManagement.DataProvidersManagement proveedores)
         {
             _datosEnMemoria = datosEnMemoria;
             _catalogPrensa = prensaCatalog;

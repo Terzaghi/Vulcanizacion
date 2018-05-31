@@ -1,10 +1,5 @@
-﻿using PrensaCatalog.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model.BL.DTO.Enums;
+﻿using Model.BL.DTO.Enums;
+using PrensaCatalog.Enums;
 
 namespace PrensaCatalog.DTO
 {
@@ -16,7 +11,5 @@ namespace PrensaCatalog.DTO
 
         public Prioridad prioridad {get; set;}
         public Tipo_Contramedidas[] Contramedidas { get; set; }
-
-
     }
 }

@@ -24,10 +24,10 @@ namespace RequestManager
 
         private SortedDictionary<long, PendingRequestLogic> _dicRequest;
         private RequestMotor _refMotorSolicitudes = null;
-        private PrensaCatalog.PrensaCatalog _catalogPrensas;
+        private PrensaCatalog.Prensas _catalogPrensas;
 
 
-        public PendingRequests(ref PrensaCatalog.PrensaCatalog catalogPrensas)
+        public PendingRequests(ref PrensaCatalog.Prensas catalogPrensas)
         {
             this._catalogPrensas = catalogPrensas;
         }
