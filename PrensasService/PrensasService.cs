@@ -43,13 +43,6 @@ namespace PrensasService
 
             _configurationInfo = string.Empty;
 
-            if (ConfigurationManager.AppSettings["FrontendWebAPI"] != null)
-            {
-                string url = ConfigurationManager.AppSettings["FrontendWebAPI"];
-
-                _configurationInfo += url;
-            }
-
             if (ConfigurationManager.AppSettings["SignalR_Port"] != null)
             {
                 string puertoSignalR = ConfigurationManager.AppSettings["SignalR_Port"];
