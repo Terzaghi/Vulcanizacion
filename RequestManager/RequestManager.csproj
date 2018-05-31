@@ -51,9 +51,6 @@
     <Compile Include="Conditions\Conditions.cs" />
     <Compile Include="DictionaryActiveRequests.cs" />
     <Compile Include="LoadRequests.cs" />
-    <Compile Include="DTO\RequestWithStates.cs" />
-    <Compile Include="DTO\Request.cs" />
-    <Compile Include="DTO\RequestGenerated.cs" />
     <Compile Include="PendingRequests.cs" />
     <Compile Include="PendingRequestLogic.cs" />
     <Compile Include="RequestMotor.cs" />
@@ -81,6 +78,10 @@
     <ProjectReference Include="..\Model\Model.BL\Model.BL.csproj">
       <Project>{ae81088c-6b85-4cb0-9267-4e0af2954f80}</Project>
       <Name>Model.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RequestManager.DTO\RequestManager.DTO.csproj">
+      <Project>{ca618d35-fb0b-49b0-aae3-7507ffa57087}</Project>
+      <Name>RequestManager.DTO</Name>
     </ProjectReference>
     <ProjectReference Include="..\TagCatalog\PrensaCatalog.csproj">
       <Project>{62747456-1033-4097-b7be-f7c37ecb35e0}</Project>

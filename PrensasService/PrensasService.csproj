@@ -57,6 +57,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.Security\Common.Security.csproj">
+      <Project>{7DD8FE8C-8A2C-4AA0-B463-D88CE5F02874}</Project>
+      <Name>Common.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Logger\Common.Logger.csproj">
       <Project>{db95373e-d53e-4172-912e-98f671d62729}</Project>
       <Name>Common.Logger</Name>

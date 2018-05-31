@@ -1,17 +1,10 @@
-﻿
-using DataProvidersManagement;
-using LoggerManager;
+﻿using LoggerManager;
 using Memory.Common;
 using Model.BL.DTO.Enums;
 using RequestManager.Conditions;
-using RequestManager.DTO;
-using RuleManager.Clases;
-using RuleManager.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using ValuesMemory;
 

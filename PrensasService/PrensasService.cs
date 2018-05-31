@@ -1,22 +1,12 @@
-﻿using Communication.SignalR;
-using DataProvider.Interfaces;
+﻿using Common.Security;
+using Communication.SignalR;
 using LoggerManager;
-using Model.BL.DTO;
-using Model.BL.DTO.Enums;
 using RequestManager;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 using ValuesMemory;
 using WCF_RequestMotorServer;
-using static RequestManager.RequestMotor;
 
 namespace PrensasService
 {
@@ -24,18 +14,25 @@ namespace PrensasService
     {
         ILogger log = LogFactory.GetLogger(typeof(PrensasService));
 
+        #region Attributes
+
         private readonly string _version;           //Versión del servicio
         private readonly string _configurationInfo; //Configuración del servicio
 
         MemoryValues _datosEnMemoria;
         PrensaCatalog.PrensaCatalog _catalogoPrensas;              // Catálogo de señales configuradas
         RequestMotor _motorSolicitudes;  // Validación y lanzamiento de las solicitudes
-        DataProvidersManagement.DataProvidersManagement _proveedorDatos;
+        DataProvidersManagement.DataProvidersManagement _proveedores;
         RequestServerWCF _servidorWCF;
+
+        #endregion
+
+        #region Initialization
 
         public PrensasService()
         {
             InitializeComponent();
+
             if (ConfigurationManager.AppSettings["Service_Version"] != null)
             {
                 _version = ConfigurationManager.AppSettings["Service_Version"].Trim();
@@ -62,12 +59,17 @@ namespace PrensasService
             log.Information("RequestManagerService OnStart. Configuración del servicio: {0}", !string.IsNullOrEmpty(_configurationInfo) ? _configurationInfo : "null");
 
             this.Inicialize();
+
             this.StartSignalR();
-            
+
+            CargarConfiguracionReinicioValidacionesSignalR();
         }
 
         protected override void OnStop()
         {
+            // Detenemos los proveedores de datos
+            this._proveedores.Stop();
+
             // Al cerrar guardará el estado de las variables del motor de reglas            
             if (this._motorSolicitudes != null)
             {
@@ -87,24 +89,19 @@ namespace PrensasService
                 log.Information("");
 
                 log.Information("Inicializando sistema");
-
-                //this._conexiones = new ConnectionsManager.Connections();
-                this._catalogoPrensas = new PrensaCatalog.PrensaCatalog();
-
-                this._datosEnMemoria = new MemoryValues();
-    
                 
+                this._catalogoPrensas = new PrensaCatalog.PrensaCatalog();
+                this._datosEnMemoria = new MemoryValues();
+
+                this._proveedores = new DataProvidersManagement.DataProvidersManagement(new DataProvider.TManager.Provider(ref _datosEnMemoria));
+                this._proveedores.DataChanged += _proveedores_DataChanged;
+
+
                 // Se va a inicializar el motor de solicitudes, que cargará de los archivos temporales las solicitudes anteriores que hubiera (puede tardar)
                 DateTime fch1 = DateTime.UtcNow;
                 log.Debug("Motor de Solicitudes. Iniciando y cargando reglas anteriores... (puede tardar)");
-
-                this._proveedorDatos = new DataProvidersManagement.DataProvidersManagement(new DataProvider.TManager.Provider(ref _datosEnMemoria));
-
-                { }
-                this._proveedorDatos.DataChanged += _proveedorDatos_DataChanged;
-
-                this._motorSolicitudes = new RequestMotor(ref this._datosEnMemoria, ref this._catalogoPrensas,ref this._proveedorDatos);
-           
+                
+                this._motorSolicitudes = new RequestMotor(ref this._datosEnMemoria, ref this._catalogoPrensas,ref this._proveedores);
               
                 TimeSpan tsTiempoCarga = DateTime.UtcNow - fch1;
                 log.Debug(string.Format("Tiempo de inicialización: {0} sg", tsTiempoCarga.Seconds));
@@ -120,36 +117,8 @@ namespace PrensasService
                 log.Error("Inicializa()", er);
             }
         }
-        //private void _motorSolicitudes_RequestExpired(object sender, RequestExpiredEventArgs e)
-        //{
-        //    try
-        //    {
-        //        string str = string.Format(" **** Solicitud expirada (Id_Request: {0}, Id_RequestGenerated: {1})", e.Id_Request, e.Id_RequestGenerated);
-        //        log.Debug(str);
-        //    }
-        //    catch (Exception er)
-        //    {
-        //        log.Error("_motorReglas_RequestExpired()", er);
-        //    }
-        //}
 
-        /// <summary>
-        /// Método que se lanza cuando tras evaluar una regla se cumple o se deja de cumplir la condición
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //private void _motorSolicitudes_RequestStateChanged(object sender, RequestStateChangedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        string str = string.Format("CAMBIO DE ESTADO (Id_Request: {0}, Estado: {1})", e.Id_Request, e.estado);
-        //        log.Debug(str);
-        //    }
-        //    catch (Exception er)
-        //    {
-        //        log.Error("_motorSolicitudes_RequestStateChanged()", er);
-        //    }
-        //}
+        #endregion
 
         /// <summary>
         /// Con cada recepción de datos de los distintos proveedores se lanza el evento, y aqui valida si se cumple la condición
@@ -157,7 +126,7 @@ namespace PrensasService
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _proveedorDatos_DataChanged(DataProvider.Interfaces.DataReceivedEventArgs e)
+        private void _proveedores_DataChanged(DataProvider.Interfaces.DataReceivedEventArgs e)
         {
             try
             {
@@ -172,10 +141,14 @@ namespace PrensasService
                 log.Error("_proveedores_DataChanged()", er);
             }
         }
-
-
+        
         #region SignalR
-        private bool _signalR_Connected = false;
+        
+        private void InicializaSignalR()
+        {
+            SignalRManager.GetInstance.OnClientConnected += GetInstance_OnClientConnected;
+            SignalRManager.GetInstance.OnClientDisconnected += GetInstance_OnClientDisconnected;
+        }
 
         private void StartSignalR()
         {
@@ -191,14 +164,136 @@ namespace PrensasService
             }
         }
 
-        private void InicializaSignalR()
-        {
-                   
+        #region  Comprobar caidas SignalR   
 
-            SignalRManager.GetInstance.OnClientConnected += GetInstance_OnClientConnected;
-            SignalRManager.GetInstance.OnClientDisconnected += GetInstance_OnClientDisconnected;
-            SignalRManager.GetInstance.OnRequestAccepted+= SignalRManager_OnRequestAccepted;
+        private bool _signalR_Connected = false;
+
+        private System.Timers.Timer _tmrComprobarSignalR = null;
+
+        private int _tiempoRestanteComprobarSignalR = 0;
+
+        private int _segundosParaSignalR = 60;
+
+        private void CargarConfiguracionReinicioValidacionesSignalR()
+        {
+            try
+            {
+                log.Debug("Comprobando configuración para las validaciones de signalR");
+
+                if (ConfigurationManager.AppSettings["TiempoValidacionSignalR"] != null)
+                {
+                    if (int.TryParse(ConfigurationManager.AppSettings["TiempoValidacionSignalR"], out this._segundosParaSignalR))
+                    {
+                        if (_segundosParaSignalR > 0)
+                        {
+                            log.Debug("Están programadas las validaciones de SignalR cada {0} segundos", _segundosParaSignalR);
+                            ValidarSignalR_Start();
+                        }
+                        else
+                        {
+                            log.Debug("No están programados las validaciones a signalR");
+                        }
+                    }
+                }
+            }
+            catch (Exception er)
+            {
+                log.Error("CargarConfiguracionReinicioAutomatico()", er);
+            }
         }
+
+        private void ValidarSignalR_Start()
+        {
+            try
+            {
+                if (_tmrComprobarSignalR == null)
+                {
+                    _tmrComprobarSignalR = new System.Timers.Timer();
+                    _tmrComprobarSignalR.Interval = 1000;
+                    _tmrComprobarSignalR.Elapsed += _tmrComprobarSignalR_Elapsed;
+                    _tiempoRestanteComprobarSignalR = _segundosParaSignalR;
+
+                    _tmrComprobarSignalR.Start();
+                }
+                else
+                {
+                    // Ya estaba iniciado, lo detenemos
+                    _tmrComprobarSignalR.Stop();
+                    _tmrComprobarSignalR.Dispose();
+                    _tmrComprobarSignalR = null;
+
+                    GC.Collect();
+                }
+            }
+            catch (Exception er)
+            {
+                log.Error("ValidarSignalR_Start()", er);
+            }
+        }
+
+        private void _tmrComprobarSignalR_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            try
+            {
+                _tiempoRestanteComprobarSignalR--;
+
+                //LabelReinicioEscribir(_tiempoRestanteComprobarSignalR);
+
+                if (_tiempoRestanteComprobarSignalR <= 0)
+                {
+                    // Detenemos mientras validamos y luego reanudamos                    
+                    _tmrComprobarSignalR.Stop();
+
+                    // Lanzamos las validaciones
+                    ValidarSignalR();
+
+                    // Volvemos a activar las comprobaciones
+                    _tiempoRestanteComprobarSignalR = _segundosParaSignalR;
+                    _tmrComprobarSignalR.Start();
+                }
+            }
+            catch (Exception er)
+            {
+                log.Error("_tmrComprobarSignalR_Elapsed()", er);
+            }
+        }
+
+        private void ValidarSignalR()
+        {
+            try
+            {
+                // Realiza una petición a signalR para que nos indique si está activo
+                string puertoSignalR = ConfigurationManager.AppSettings["SignalR_Port"];
+                string url = string.Format("http://localhost:{0}/", puertoSignalR);
+
+                // Generamos un token de sistema
+                Common.Security.TokenManager tokGen = new Common.Security.TokenManager();
+                string strToken = tokGen.GenerateStringToken(0, 0, null);
+
+                SignalR_Tester sR = new SignalR_Tester();
+
+                sR.TestConnection(url, strToken, result =>
+                {
+                    log.Debug("ValidarSignalR(). Estado servidor SignalR: {0}", result);
+
+                    this._signalR_Connected = result;
+
+                    if (!result)
+                    {
+                        // No se pudo conectar con el servidor                        
+                        ReiniciarAplicacion();
+                    }
+                });
+            }
+            catch (Exception er)
+            {
+                log.Error("ValidarSignalR()", er);
+            }
+        }
+
+        #endregion
+
+        #region Eventos
 
         // Desconexiones realizadas a signalr
         private void GetInstance_OnClientDisconnected(string connectionId, string ip, int Id_User)
@@ -212,22 +307,11 @@ namespace PrensasService
            
         }
 
-
-
-
-        #region Events
-
-        private void SignalRManager_OnRequestAccepted(string connectionId, int requestId)
-        {
-            log.Debug(string.Format("RequestAccepted: {0}, {1}", connectionId, requestId));
-        }
-
         #endregion
 
         #endregion
+
         #region WCF
-
-       
 
         public bool InicializaWCF()
         {

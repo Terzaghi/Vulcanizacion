@@ -1,8 +1,6 @@
 ﻿using Model.BL.DTO.Enums;
-using RequestManager.DTO;
-using System.Collections.Generic;
 
-namespace RuleManager.DTO
+namespace RequestManager.DTO
 {
     public class RequestWithStates
     {
@@ -10,6 +8,4 @@ namespace RuleManager.DTO
         public bool Active { get; set; }
         public Estado_Solicitud State { get; set; }
     }
-
-   
 }

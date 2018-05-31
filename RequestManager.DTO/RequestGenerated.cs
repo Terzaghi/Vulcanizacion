@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RequestManager.DTO
 {
-    public class RequestGenerated: Request, ICloneable
-    {   
+    public class RequestGenerated : Request, ICloneable
+    {
         public long Id_Request_Generated { get; set; }
         public DateTime DateGeneration { get; set; }
         public int Id_Prensa { get; set; }
@@ -37,9 +34,9 @@ namespace RequestManager.DTO
             // Propiedades propias de request generated
             this.Id_Request_Generated = Id_Request_Generated;
             this.DateGeneration = DateTime.Now;
-            
 
-    }
+
+        }
 
         #region IClonable
         public object Clone()

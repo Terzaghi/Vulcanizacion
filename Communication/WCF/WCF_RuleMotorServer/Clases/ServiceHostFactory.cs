@@ -1,5 +1,4 @@
-﻿using BSHP_PSM.Communication.SignalR;
-using Communication.SignalR;
+﻿using Communication.SignalR;
 using RequestManager;
 using System;
 using System.Collections.Generic;
