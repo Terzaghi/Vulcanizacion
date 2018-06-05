@@ -15,7 +15,7 @@ namespace Model.BL
 
         private string _connectionString;
 
-        public Historico_Solicitud(string connectionString=null)
+        public Historico_Solicitud(string connectionString)
         {
             this._connectionString = connectionString;
         }

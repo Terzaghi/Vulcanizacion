@@ -13,7 +13,7 @@ namespace Model.BL
 
         private string _connectionString;
 
-        public PrensasDatos(string connectionString=null)
+        public PrensasDatos(string connectionString)
         {
             this._connectionString = connectionString;
         }

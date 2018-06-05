@@ -27,7 +27,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 var sql = string.Format("INSERT INTO ESTADO (NOMBRE)" +
@@ -62,7 +62,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID_Estado AS {0},
@@ -123,7 +123,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 var sql = string.Format(@"SELECT
                                             ID_Estado  AS {0},
                                             NOMBRE AS {1}

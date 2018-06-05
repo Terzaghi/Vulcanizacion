@@ -62,7 +62,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID AS {0},

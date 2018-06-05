@@ -27,7 +27,8 @@ namespace Model.DAL
             try
             {
 
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
+
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 var sql = string.Format("INSERT INTO CONTRAMEDIDA (NOMBRE)" +
@@ -62,7 +63,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID_Contramedida AS {0},
@@ -96,7 +97,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string sql = string.Format("DELETE FROM CONTRAMEDIDA WHERE ID_Contramedida = {0}", id);
 
                 List<IDataParameter> parameters = new List<IDataParameter>();
@@ -123,7 +124,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 var sql = string.Format(@"SELECT
                                             ID_Contramedida AS {0},
                                             NOMBRE AS {1}
@@ -150,7 +151,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format("UPDATE Contramedida SET NOMBRE = " + ic + "{0} WHERE ID_Contramedida = " + ic + "{1}",
                                         Arguments.Nombre, Arguments.Id_Contramedida);

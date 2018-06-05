@@ -17,7 +17,7 @@ namespace Model.DAL
         ILogger log = LogFactory.GetLogger(typeof(DispositivoDAL));
         private string _connectionString;
 
-        public DispositivoDAL(string connectionString=null)
+        public DispositivoDAL(string connectionString)
         {
             _connectionString = connectionString;
         }
@@ -27,7 +27,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 var sql = string.Format("INSERT INTO DISPOSITIVO (SERIAL_NUMBER, IP, DESCRIPCION)" +
@@ -64,7 +64,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID_Dispositivo AS {0},
@@ -101,7 +101,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string sql = string.Format("DELETE FROM DISPOSITIVO WHERE ID_DISPOSITIVO = {0}", id);
 
                 List<IDataParameter> parameters = new List<IDataParameter>();
@@ -128,7 +128,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 var sql = string.Format(@"SELECT
                                             ID_DISPOSITIVO AS {0},
                                             SERIAL_NUMBER AS {1},
@@ -157,7 +157,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format("UPDATE Dispositivo SET Serial_Number = " + ic + "{0}, " +
                                         " IP = " + ic + "{1}, Descripcion= " + ic + "{2} WHERE ID_DISPOSITIVO = " + ic + "{3}",
@@ -194,7 +194,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID_Dispositivo AS {0},

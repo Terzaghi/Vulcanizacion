@@ -19,22 +19,22 @@ namespace Model.DAL.Database
 
         private IDataAccessor accesor;
 
-        public DataAccesor()
-        {
-            try
-            {
-                if (ConfigurationManager.ConnectionStrings.Count > 0)
-                {
-                    // La 0 la crea el por defecto 
-                    _cadenaConexion = ConfigurationManager.ConnectionStrings[1].ConnectionString;
-                    accesor = new Accesor(_cadenaConexion);
-                }
-            }
-            catch (Exception e)
-            {
-                log.Error("DataAccessor()", e);
-            }
-        }
+        //public DataAccesor()
+        //{
+        //    try
+        //    {
+        //        if (ConfigurationManager.ConnectionStrings.Count > 0)
+        //        {
+        //            // La 0 la crea el por defecto 
+        //            _cadenaConexion = ConfigurationManager.ConnectionStrings[1].ConnectionString;
+        //            accesor = new Accesor(_cadenaConexion);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        log.Error("DataAccessor()", e);
+        //    }
+        //}
 
         public DataAccesor(string nameConnectionString)
         {

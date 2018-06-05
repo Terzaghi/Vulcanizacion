@@ -15,7 +15,7 @@ namespace Model.DAL
         ILogger log = LogFactory.GetLogger(typeof(EspecificacionDAL));
         private string _connectionString;
 
-        public EspecificacionDAL(string connectionString=null)
+        public EspecificacionDAL(string connectionString)
         {
             _connectionString = connectionString;
         }
@@ -73,7 +73,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 var sql = string.Format(@"SELECT
                                             CV AS {0},
                                             MINUTOS_LIMITE_VULCANIZADO AS {1}

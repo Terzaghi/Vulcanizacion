@@ -17,7 +17,7 @@ namespace Model.DAL
         ILogger log = LogFactory.GetLogger(typeof(SolicitudDAL));
         private string _connectionString;
 
-        public SolicitudDAL(string connectionString=null)
+        public SolicitudDAL(string connectionString)
         {
             _connectionString = connectionString;
         }

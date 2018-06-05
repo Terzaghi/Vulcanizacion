@@ -16,7 +16,7 @@ namespace Model.BL
 
         private string _connectionString;
 
-        public Historico_Contramedidas(string connectionString=null)
+        public Historico_Contramedidas(string connectionString)
         {
             this._connectionString = connectionString;
         }

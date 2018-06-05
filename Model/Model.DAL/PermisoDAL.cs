@@ -17,7 +17,7 @@ namespace Model.DAL
         ILogger log = LogFactory.GetLogger(typeof(PermisoDAL));
         private string _connectionString;
 
-        public PermisoDAL(string connectionString=null)
+        public PermisoDAL(string connectionString)
         {
             _connectionString = connectionString;
         }

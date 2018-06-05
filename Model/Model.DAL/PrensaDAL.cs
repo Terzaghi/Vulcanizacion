@@ -15,18 +15,22 @@ namespace Model.DAL
     public class PrensaDAL:IPrensa
     {
         ILogger log = LogFactory.GetLogger(typeof(PrensaDAL));
+
         private string _connectionString;
-        public PrensaDAL(string connectionString=null)
+
+        public PrensaDAL(string connectionString)
         {
             _connectionString = connectionString;
         }
+
         public int Agregar(Prensa entidad)
         {
             int id = -1;
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
+
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 var sql = string.Format("INSERT INTO PRENSA (NOMBRE, TOPIC, BARCODE_PRENSA, BARCODE_PINTADO, BARCODE_PINCHADO, ID_ZONA)" +
@@ -66,7 +70,8 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
+
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID AS {0},
@@ -114,7 +119,8 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
+
                 string sql = string.Format("DELETE FROM PRENSA WHERE ID = {0}", id);
 
                 List<IDataParameter> parameters = new List<IDataParameter>();
@@ -141,7 +147,8 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
+
                 var sql = string.Format(@"SELECT
                                             ID AS {0},
                                             Nombre AS {1},

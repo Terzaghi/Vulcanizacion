@@ -17,7 +17,7 @@ namespace Model.DAL
         ILogger log = LogFactory.GetLogger(typeof(Historico_DeshabilitacionDAL));
         private string _connectionString;
 
-        public Historico_DeshabilitacionDAL(string connectionString=null)
+        public Historico_DeshabilitacionDAL(string connectionString)
         {
             _connectionString = connectionString;
         }

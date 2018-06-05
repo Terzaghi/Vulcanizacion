@@ -16,7 +16,7 @@ namespace Model.BL
         ILogger log = LogFactory.GetLogger(typeof(Permisos));
 
         private string _connectionString;
-        public Permisos(string connectionString=null)
+        public Permisos(string connectionString)
         {
             _connectionString = connectionString;
         }

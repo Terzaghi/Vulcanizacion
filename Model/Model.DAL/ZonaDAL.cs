@@ -17,7 +17,7 @@ namespace Model.DAL
         ILogger log = LogFactory.GetLogger(typeof(ZonaDAL));
         private string _connectionString;
 
-        public ZonaDAL(string connectionString=null)
+        public ZonaDAL(string connectionString)
         {
             _connectionString = connectionString;
         }

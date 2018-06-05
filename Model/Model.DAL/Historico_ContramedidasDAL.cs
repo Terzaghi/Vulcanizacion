@@ -17,7 +17,7 @@ namespace Model.DAL
         ILogger log = LogFactory.GetLogger(typeof(Historico_ContramedidasDAL));
         private string _connectionString;
 
-        public Historico_ContramedidasDAL(string connectionString=null)
+        public Historico_ContramedidasDAL(string connectionString)
         {
             _connectionString = connectionString;
         }

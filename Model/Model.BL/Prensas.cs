@@ -5,6 +5,7 @@ using Model.BL.Utils;
 using Model.DAL;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +16,25 @@ namespace Model.BL
     {
         ILogger log = LogFactory.GetLogger(typeof(Prensas));
 
-        private string _connectionString;
+        private const string ConnectionStringPrensasConfig = "PrensasConfigDB";
 
-        public Prensas(string connectionString = null)
+        private string _connectionString;
+        
+        public Prensas()//string connectionString = null)
         {
-            this._connectionString = connectionString;
+            this._connectionString = ConnectToPrensasConfig();
         }
+
+        private string ConnectToPrensasConfig()
+        {
+            if (ConfigurationManager.ConnectionStrings[ConnectionStringPrensasConfig].ConnectionString != null)
+            {
+                return ConfigurationManager.ConnectionStrings[ConnectionStringPrensasConfig].ConnectionString;
+            }
+            else
+                return null;
+        }
+
         public Prensa Detalles(int id)
         {
             Prensa result = null;
