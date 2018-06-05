@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Configuration;
 using Common.Database;
-using Model.SqlServer;
+//using Model.SqlServer;
+using Model.Oracle;
 using System.Data.OleDb;
 using System.Data.SqlClient;
 
@@ -42,7 +43,11 @@ namespace Model.DAL.Database
                 string s = ConfigurationManager.ConnectionStrings[nameConnectionString].ConnectionString;
 
                 if (s.Length > 0)
+                {
                     _cadenaConexion = s;
+                    accesor = new Accesor(_cadenaConexion);
+                }
+                   
             }
             catch (Exception e)
             {
@@ -69,7 +74,7 @@ namespace Model.DAL.Database
 
         public object ExecuteScalar(string sql, List<IDataParameter> parameters = null, bool IsProcedure = false)
         {
-            throw new NotImplementedException();
+            return accesor.ExecuteScalar(sql, parameters, IsProcedure);
         }
 
         public DataSet FillDataSet(string sql, List<IDataParameter> parameters = null, bool IsProcedure = false)

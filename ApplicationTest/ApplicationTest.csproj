@@ -55,6 +55,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -80,9 +83,65 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.Security\Common.Security.csproj">
+      <Project>{7DD8FE8C-8A2C-4AA0-B463-D88CE5F02874}</Project>
+      <Name>Common.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Logger\Common.Logger.csproj">
+      <Project>{DB95373E-D53E-4172-912E-98F671D62729}</Project>
+      <Name>Common.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Communication\Communication.SignalR\Communication.SignalR.csproj">
+      <Project>{F37957F3-08BA-449C-AA8D-C2AC07D8AC1B}</Project>
+      <Name>Communication.SignalR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Communication\Communication.SignalR_Tester\Communication.SignalR_Tester.csproj">
+      <Project>{60A10D4E-66A3-4778-AB16-A5786E718D75}</Project>
+      <Name>Communication.SignalR_Tester</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Communication\WCF\WCF_RuleMotorServer\WCF_RequestMotorServer.csproj">
+      <Project>{B64D9E04-66E0-4047-BEEF-D2F9FECA7AAA}</Project>
+      <Name>WCF_RequestMotorServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataProvidersManagement\DataProvidersManagement.csproj">
+      <Project>{DA6B8A44-CC83-4302-B25A-801826F256A5}</Project>
+      <Name>DataProvidersManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataProvider\DataProvider.Interfaces\DataProvider.Interfaces.csproj">
+      <Project>{6D607DCB-58EA-459C-B9EC-AE56D9352C96}</Project>
+      <Name>DataProvider.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataProvider\DataProvider.TManager\DataProvider.TManager.csproj">
+      <Project>{3E228CAE-6359-4A74-BAE7-44C0E2BF14E8}</Project>
+      <Name>DataProvider.TManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Memory\Memory.Common.csproj">
+      <Project>{6FB2A742-15A8-49AC-B725-AA9B3F546DB5}</Project>
+      <Name>Memory.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.BL.DTO\Model.BL.DTO.csproj">
+      <Project>{C78569C4-3A0C-4DFE-975F-E72F44EB3AA3}</Project>
+      <Name>Model.BL.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.BL\Model.BL.csproj">
+      <Project>{AE81088C-6B85-4CB0-9267-4E0AF2954F80}</Project>
+      <Name>Model.BL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.DAL\Model.DAL.csproj">
       <Project>{1643ab00-4b82-4413-a67f-be7cc4f024c4}</Project>
       <Name>Model.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RequestManager\RequestManager.csproj">
+      <Project>{521DE073-1D7A-4399-97C6-A9545B6E4745}</Project>
+      <Name>RequestManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TagCatalog\PrensaCatalog.csproj">
+      <Project>{62747456-1033-4097-B7BE-F7C37ECB35E0}</Project>
+      <Name>PrensaCatalog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ValuesMemory\ValuesMemory.csproj">
+      <Project>{05E81E17-DC8E-4621-86FC-1DDA69487347}</Project>
+      <Name>ValuesMemory</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

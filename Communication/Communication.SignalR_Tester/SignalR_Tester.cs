@@ -1,5 +1,6 @@
 ﻿using LoggerManager;
 using Microsoft.AspNet.SignalR.Client;
+
 using System;
 
 namespace Communication.SignalR_Tester

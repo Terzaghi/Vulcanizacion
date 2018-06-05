@@ -32,49 +32,63 @@ namespace PrensasService
 
         public PrensasService()
         {
-            InitializeComponent();
+           
+                InitializeComponent();
 
-            if (ConfigurationManager.AppSettings["Service_Version"] != null)
-            {
-                _version = ConfigurationManager.AppSettings["Service_Version"].Trim();
-            }
+                if (ConfigurationManager.AppSettings["Service_Version"] != null)
+                {
+                    _version = ConfigurationManager.AppSettings["Service_Version"].Trim();
+                }
 
-            _configurationInfo = string.Empty;
+                _configurationInfo = string.Empty;
 
-            if (ConfigurationManager.AppSettings["SignalR_Port"] != null)
-            {
-                string puertoSignalR = ConfigurationManager.AppSettings["SignalR_Port"];
+                if (ConfigurationManager.AppSettings["SignalR_Port"] != null)
+                {
+                    string puertoSignalR = ConfigurationManager.AppSettings["SignalR_Port"];
 
-                _configurationInfo += " SignalR: " + puertoSignalR;
-            }
+                    _configurationInfo += " SignalR: " + puertoSignalR;
+                }
 
-            if (ConfigurationManager.AppSettings["WCF_ListenPort"] != null)
-            {
-                _configurationInfo += " WCF: " + ConfigurationManager.AppSettings["WCF_ListenPort"];
-            }
+                if (ConfigurationManager.AppSettings["WCF_ListenPort"] != null)
+                {
+                    _configurationInfo += " WCF: " + ConfigurationManager.AppSettings["WCF_ListenPort"];
+                }
+           
         }
 
         protected override void OnStart(string[] args)
         {
-            log.Information("RequestManagerService OnStart. Versión: {0}", !string.IsNullOrEmpty(_version) ? _version : "null");
-            log.Information("RequestManagerService OnStart. Configuración del servicio: {0}", !string.IsNullOrEmpty(_configurationInfo) ? _configurationInfo : "null");
+            try
+            {
+                log.Information("RequestManagerService OnStart. Versión: {0}", !string.IsNullOrEmpty(_version) ? _version : "null");
+                log.Information("RequestManagerService OnStart. Configuración del servicio: {0}", !string.IsNullOrEmpty(_configurationInfo) ? _configurationInfo : "null");
 
-            this.Inicialize();
+                this.Inicialize();
+                _proveedores.Start();
+                //this.StartSignalR();
 
-            this.StartSignalR();
-
-            CargarConfiguracionReinicioValidacionesSignalR();
+                //CargarConfiguracionReinicioValidacionesSignalR();
+            }catch(Exception ex)
+            {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-OnStart", ex.Message);
+            }
         }
 
         protected override void OnStop()
         {
-            // Detenemos los proveedores de datos
-            this._proveedores.Stop();
-
-            // Al cerrar guardará el estado de las variables del motor de reglas            
-            if (this._motorSolicitudes != null)
+            try
             {
-                this._motorSolicitudes.Dispose();
+                // Detenemos los proveedores de datos
+                this._proveedores.Stop();
+
+                // Al cerrar guardará el estado de las variables del motor de reglas            
+                if (this._motorSolicitudes != null)
+                {
+                    this._motorSolicitudes.Dispose();
+                }
+            }catch(Exception ex)
+            {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-OnStop", ex.Message);
             }
         }
 
@@ -115,7 +129,9 @@ namespace PrensasService
             }
             catch (Exception er)
             {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService.Initialize", er.Message);
                 log.Error("Inicializa()", er);
+               
             }
         }
 
@@ -139,7 +155,9 @@ namespace PrensasService
             }
             catch (Exception er)
             {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-proveedoresDataChange", er.Message);
                 log.Error("_proveedores_DataChanged()", er);
+              
             }
         }
         
@@ -147,21 +165,34 @@ namespace PrensasService
         
         private void InicializaSignalR()
         {
-            SignalRManager.GetInstance.OnClientConnected += GetInstance_OnClientConnected;
-            SignalRManager.GetInstance.OnClientDisconnected += GetInstance_OnClientDisconnected;
+            try
+            {
+                SignalRManager.GetInstance.OnClientConnected += GetInstance_OnClientConnected;
+                SignalRManager.GetInstance.OnClientDisconnected += GetInstance_OnClientDisconnected;
+            }catch(Exception ex)
+            {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-InicializaSignalR", ex.Message);
+            }
+          
         }
 
         private void StartSignalR()
         {
-            if (SignalRManager.GetInstance.Start())
+            try
             {
-                log.Information("SignalR server started");
-                this._signalR_Connected = true;
-            }
-            else
+                if (SignalRManager.GetInstance.Start())
+                {
+                    log.Information("SignalR server started");
+                    this._signalR_Connected = true;
+                }
+                else
+                {
+                    log.Warning("SignalR server not started");
+                    this._signalR_Connected = false;
+                }
+            }catch(Exception ex)
             {
-                log.Warning("SignalR server not started");
-                this._signalR_Connected = false;
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-StartSignalR", ex.Message);
             }
         }
 
@@ -199,7 +230,9 @@ namespace PrensasService
             }
             catch (Exception er)
             {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-CargarConfiguracionReinicioValidacionesSignalR", er.Message);
                 log.Error("CargarConfiguracionReinicioAutomatico()", er);
+              
             }
         }
 
@@ -228,7 +261,9 @@ namespace PrensasService
             }
             catch (Exception er)
             {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-ValidarSignalR_Start", er.Message);
                 log.Error("ValidarSignalR_Start()", er);
+              
             }
         }
 
@@ -255,7 +290,9 @@ namespace PrensasService
             }
             catch (Exception er)
             {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-_tmrComprobarSignalR_Elapsed", er.Message);
                 log.Error("_tmrComprobarSignalR_Elapsed()", er);
+                
             }
         }
 
@@ -288,7 +325,9 @@ namespace PrensasService
             }
             catch (Exception er)
             {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-ValidarSignalR", er.Message);
                 log.Error("ValidarSignalR()", er);
+               
             }
         }
 
@@ -316,6 +355,7 @@ namespace PrensasService
             }
             catch (Exception er)
             {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-ReiniciarAplicacion", er.Message);
                 log.Error("ReiniciarAplicacion()", er);
             }
         }
@@ -341,6 +381,7 @@ namespace PrensasService
             }
             catch (Exception er)
             {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-RestartService", er.Message);
                 log.Error("RestartService()", er);
             }
         }
@@ -382,6 +423,7 @@ namespace PrensasService
             }
             catch (Exception er)
             {
+                System.Diagnostics.EventLog.WriteEntry("PrensasService-InicializaWCF", er.Message);
                 log.Error("InicializaWCF()", er);
             }
 

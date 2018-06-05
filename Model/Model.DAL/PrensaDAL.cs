@@ -145,22 +145,15 @@ namespace Model.DAL
                 var sql = string.Format(@"SELECT
                                             ID AS {0},
                                             Nombre AS {1},
-                                            TOPIC AS {2},
-                                            Tag AS {3},
-                                            Tag_CV AS {4},
-                                            Tag_Temp AS {5},
-                                            Tag_Ciclo AS {6},
-                                            Tag_Prod AS {7},
-                                            Barcode_Prensa AS {8},
-                                            Barcode_Pintado AS {9},
-                                            Barcode_Pinchado AS {10}
-                                            Prensa_Activa AS {13},
-                                            ID_Zona AS {14}
+                                            Barcode_Prensa AS {2},
+                                            Barcode_Pintado AS {3},
+                                            Barcode_Pinchado AS {4},
+                                            Prensa_Activa AS {5},
+                                            ID_Zona AS {6}
                                         FROM PRENSA",
-                                        Arguments.Id, Arguments.Nombre, Arguments.Topic,
-                                        Arguments.Tag, Arguments.Tag_CV, Arguments.Tag_Temp, Arguments.Tag_Ciclo,
-                                        Arguments.Tag_Prod, Arguments.Barcode_Prensa, Arguments.Barcode_Pintado,
-                                        Arguments.Barcode_Pinchado, Arguments.Prensa_Activa);
+                                        Arguments.Id, Arguments.Nombre, 
+                                        Arguments.Barcode_Prensa, Arguments.Barcode_Pintado,
+                                        Arguments.Barcode_Pinchado, Arguments.Prensa_Activa, Arguments.ID_Zona);
 
                 List<IDataParameter> parameters = new List<IDataParameter>();
 

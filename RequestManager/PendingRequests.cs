@@ -1,6 +1,7 @@
 ﻿using LoggerManager;
 using Model.BL;
 using Model.BL.DTO.Enums;
+using PrensaCatalog.DTO;
 using RequestManager.Utils;
 using System;
 using System.Collections.Generic;
@@ -230,6 +231,7 @@ namespace RequestManager
             }
             return sw;
         }
+       
         public Tipo_Contramedidas getContramedidas(int id_prensa)
         {
             try
@@ -427,9 +429,9 @@ namespace RequestManager
         }
 
         /// <summary>
-        /// Restaura un diccionario completo de notificaciones a memoria
+        /// Restaura un diccionario completo de solicitudes a memoria
         /// </summary>
-        /// <param name="notifications"></param>
+        /// <param name="solicitudes"></param>
         /// <returns></returns>
         public int LoadValues(SortedDictionary<long, PendingRequestLogic> solicitudes)
         {

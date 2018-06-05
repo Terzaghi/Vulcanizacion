@@ -18,12 +18,14 @@ namespace RequestManager
         private PrensaCatalog.Prensas _catalogPrensa;
         private DataProvidersManagement.DataProvidersManagement _proveedores;
 
-        private PendingRequests _solicitudesGeneradas;
+        private PendingRequests _solicitudesGeneradas=null;
         public RequestMotor(ref MemoryValues datosEnMemoria, ref PrensaCatalog.Prensas prensaCatalog, ref DataProvidersManagement.DataProvidersManagement proveedores)
         {
             _datosEnMemoria = datosEnMemoria;
             _catalogPrensa = prensaCatalog;
             _proveedores = proveedores;
+
+            _solicitudesGeneradas = new PendingRequests(ref _catalogPrensa);
         }
         #region "Pooling Proveedores"
         public void InicializaTimerTags()
@@ -37,8 +39,8 @@ namespace RequestManager
         /// <summary>
         /// Método al que se llama cada vez que llegan valores al dataprovider para evaluar las reglas aqui cargadas
         /// </summary>
-        /// <param name="values"></param>
-        public void EvaluateData(Memory.Common.TagValue value)
+        /// <param name="value"></param>
+        public void EvaluateData(TagValue value)
         {
             try
             {
@@ -96,7 +98,7 @@ namespace RequestManager
         }
         public void ModifyPrensa()
         {
-            
+           
         }
         public void RemovePrensa(int id_prensa)
         {
@@ -167,7 +169,7 @@ namespace RequestManager
                 // Valores en memoria
                 RecuperaVariablesMemoria();
 
-                // Notificaciones generadas
+                // Solicitudes generadas
                 RecuperaVariablesSolicitudes();
 
             }

@@ -204,7 +204,7 @@ namespace LoggerManager
             }
             catch (System.Exception fallo)
             {
-                throw new System.Exception("Fallo en la lectura de la configuración de Log.", fallo);
+              throw new System.Exception("Fallo en la lectura de la configuración de Log.", fallo);
             }
         }
 

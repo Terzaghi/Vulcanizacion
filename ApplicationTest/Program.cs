@@ -16,15 +16,15 @@ namespace ApplicationTest
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
+            Application.Run(new Form1());
 
-            BD_SQL_TEST test = new BD_SQL_TEST();
+            //BD_SQL_TEST test = new BD_SQL_TEST();
             //test.inserUsuario();
             //test.getUsuario(1);
             //test.deleteUsuario(12);
             //test.listar();
             //test.Modificar();
-            test.insertContramedida();
+            //test.insertContramedida();
             //test.getContramedida(2);
             //test.deleteContramedida(3);
             //test.listarContramedida();
