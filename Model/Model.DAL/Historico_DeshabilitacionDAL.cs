@@ -27,7 +27,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 var sql = string.Format("INSERT INTO HISTORICO_DESHABILITACION (FECHA,COMENTARIO,ID_MOTIVO,ID_PERMISO, ID_PRENSA, ID_USUARIO, ID_DISPOSITIVO)" +
@@ -69,7 +69,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID_DESHABILITACION AS {0},
@@ -109,7 +109,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor =new DataAccesor(_connectionString);
                 var sql = string.Format(@"SELECT
                                             ID_DESHABILITACION AS {0},
                                             FECHA AS {1},

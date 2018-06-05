@@ -28,7 +28,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format("INSERT INTO SOLICITUD (FECHA_GENERACION, ID_PRENSA)" +
                                        " VALUES (" + ic + "{0}, " + ic + "{1}) " + accessor.sqlGetNewIdentity(Arguments.Id, "{2}"),
@@ -63,7 +63,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID AS {0},
@@ -98,7 +98,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor =  new DataAccesor(_connectionString);
                 string sql = string.Format("DELETE FROM SOLICITUD WHERE ID = {0}", id);
 
                 List<IDataParameter> parameters = new List<IDataParameter>();
@@ -125,7 +125,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 var sql = string.Format(@"SELECT
                                             ID AS {0},
                                             FECHA_GENERACION AS {1},

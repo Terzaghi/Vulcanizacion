@@ -35,6 +35,7 @@ namespace ApplicationTest
         {
           
             InitializeComponent();
+   
             if (ConfigurationManager.AppSettings["Service_Version"] != null)
             {
                 _version = ConfigurationManager.AppSettings["Service_Version"].Trim();
@@ -62,6 +63,8 @@ namespace ApplicationTest
             {
                 
                 this.Inicialize();
+
+                log.Information("Inicializamos proveedores. _proveedores.Start()");
                 _proveedores.Start();
             }
             catch (Exception ex)

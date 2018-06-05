@@ -13,7 +13,12 @@ namespace Model.BL
     public class Tags
     {
         ILogger log = LogFactory.GetLogger(typeof(Tags));
+        private string _connectionString;
 
+        public Tags(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
         #region Securización
         public Token SecurityToken { get; set; }
 
@@ -32,7 +37,7 @@ namespace Model.BL
             {
                 DAL.DTO.Tag tagDal = Converter.ConvertToDAL(tag);
 
-                TagsDAL mod = new TagsDAL();
+                TagsDAL mod = new TagsDAL(_connectionString);
                 id = mod.Agregar(tagDal);                
 
             }
@@ -54,7 +59,7 @@ namespace Model.BL
 
                 DAL.DTO.Tag tagDal = Converter.ConvertToDAL(tag);
 
-                TagsDAL mod = new TagsDAL();
+                TagsDAL mod = new TagsDAL(_connectionString);
                 result = mod.Modificar(tagDal);
 
             }
@@ -74,7 +79,7 @@ namespace Model.BL
 
             try
             {
-                TagsDAL mod = new TagsDAL();
+                TagsDAL mod = new TagsDAL(_connectionString);
                 result = mod.Eliminar(id);
             }
             catch (Exception er)
@@ -96,7 +101,7 @@ namespace Model.BL
 
                 if (!CacheData.Exist(nombreCache))
                 {
-                    TagsDAL mod = new TagsDAL();
+                    TagsDAL mod = new TagsDAL(_connectionString);
                     var tag = mod.Detalles(id);
 
                     result = Converter.ConvertToBL(tag);
@@ -129,7 +134,7 @@ namespace Model.BL
 
             try
             {
-                TagsDAL tagModel = new TagsDAL();
+                TagsDAL tagModel = new TagsDAL(_connectionString);
 
                 var tags = tagModel.GetTagsByProvider(Id_Provider) as List<DAL.DTO.Tag>;
                 result = Converter.ConvertToBL(tags);
@@ -149,7 +154,7 @@ namespace Model.BL
 
             try
             {
-                TagsDAL tagModel = new TagsDAL();
+                TagsDAL tagModel = new TagsDAL(_connectionString);
 
                 var tags = tagModel.Listar() as List<DAL.DTO.Tag>;
                 result = Converter.ConvertToBL(tags);

@@ -12,6 +12,11 @@ namespace Model.DAL
     public class TagsDAL : ITags
     {
         ILogger log = LogFactory.GetLogger(typeof(TagsDAL));
+        private string _connectionString;
+        public TagsDAL(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
 
         public int Agregar(Tag tag)
         {
@@ -19,7 +24,7 @@ namespace Model.DAL
             
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"INSERT INTO TAGS (DESCRIPCION, ID_PROVEEDOR)
                                                             VALUES (" + ic + "{0}, " + ic + "{1}) " + accessor.sqlGetNewIdentity(Arguments.Id, "{2}"),
@@ -57,7 +62,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT ID AS {0},
                                                             DESCRIPCION AS {1},
@@ -94,7 +99,7 @@ namespace Model.DAL
             {
 
 
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 List<IDataParameter> parameters = new List<IDataParameter>()
@@ -125,7 +130,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT ID AS {0},
                                                             DESCRIPCION AS {1},
@@ -153,7 +158,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT 
                                                 TAG.ID AS {0},
@@ -190,7 +195,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"UPDATE TAGS 
                                            SET
@@ -288,7 +293,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"INSERT INTO TAG_PRENSA (ID_TAG, ID_PRENSA)
                                                             VALUES (" + ic + "{0}, " + ic + "{1})",
@@ -323,7 +328,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"DELETE FROM TAG_PRENSA WHERE ID_TAG = " + ic + "{0} AND ID_PRENSA= " + ic + "{1}",
                         Arguments.IdTag, Arguments.Id_Prensa);

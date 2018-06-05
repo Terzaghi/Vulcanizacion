@@ -96,7 +96,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string sql = string.Format("DELETE FROM ESTADO WHERE ID_ESTADO = {0}", id);
 
                 List<IDataParameter> parameters = new List<IDataParameter>();
@@ -150,7 +150,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format("UPDATE ESTADO SET NOMBRE = " + ic + "{0} WHERE ID_ESTADO = " + ic + "{1}",
                                         Arguments.Nombre, Arguments.Id_Estado);

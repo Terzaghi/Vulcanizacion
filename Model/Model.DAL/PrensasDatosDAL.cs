@@ -26,7 +26,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor =  new DataAccesor(_connectionString);
                 var sql = string.Format(@"SELECT
                                                 FECHA_HORA AS {0},
                                                 PRENSA_NAME AS {1},

@@ -27,7 +27,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 var sql = string.Format("INSERT INTO USUARIO (NOMBRE, IDENTITY_CODE, PASSWORD)" +
@@ -64,7 +64,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor =new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID AS {0},
@@ -102,7 +102,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string sql = string.Format("DELETE FROM USUARIO WHERE ID = {0}", id);
 
                 List<IDataParameter> parameters = new List<IDataParameter>();
@@ -129,7 +129,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor =new DataAccesor(_connectionString);
                 var sql = string.Format(@"SELECT
                                             ID AS {0},
                                             NOMBRE AS {1},
@@ -159,7 +159,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format("UPDATE USUARIO SET NOMBRE = " + ic + "{0}, IDENTITY_CODE = " + ic + "{1}, \"PASSWORD\" = " + ic + "{2} WHERE ID = " + ic + "{3}",
                                         Arguments.Nombre, Arguments.Identity_Code,Arguments.Password, Arguments.Id);
@@ -195,7 +195,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID AS {0},
@@ -240,7 +240,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor =  new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 var sql = string.Format(@"SELECT
@@ -304,7 +304,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 var sql = string.Format(@"select 
@@ -395,7 +395,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"INSERT INTO USUARIO_PRENSA (ID_USUARIO, ID_PRENSA,FECHA_ASIGNACION)
                                                             VALUES (" + ic + "{0}, " + ic + "{1}, " + ic + "{2})",
@@ -431,7 +431,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor =  new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"DELETE FROM USUARIO_PRENSA WHERE ID_USUARIO = " + ic + "{0} AND ID_PRENSA= " + ic + "{1}",
                         Arguments.ID_Usuario, Arguments.Id_Prensa);
@@ -461,7 +461,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor =new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID_PRENSA AS {0},

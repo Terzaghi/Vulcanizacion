@@ -27,7 +27,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor =new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 var sql = string.Format("INSERT INTO ROL (NOMBRE)" +
@@ -62,7 +62,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID AS {0},
@@ -96,7 +96,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string sql = string.Format("DELETE FROM ROL WHERE ID= {0}", id);
 
                 List<IDataParameter> parameters = new List<IDataParameter>();
@@ -123,7 +123,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor =new DataAccesor(_connectionString);
                 var sql = string.Format(@"SELECT
                                             ID  AS {0},
                                             NOMBRE AS {1}
@@ -150,7 +150,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor =new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format("UPDATE ROL SET NOMBRE = " + ic + "{0} WHERE ID = " + ic + "{1}",
                                         Arguments.Nombre, Arguments.Id);
@@ -240,7 +240,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"INSERT INTO ROL_USUARIO (ID_USUARIO, ID_ROL)
                                                             VALUES (" + ic + "{0}, " + ic + "{1})",
@@ -275,7 +275,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = !string.IsNullOrEmpty(_connectionString) ? new DataAccesor(_connectionString) : new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"DELETE FROM USER_ROLES WHERE ID_USUARIO = " + ic + "{0} AND ID_ROL = " + ic + "{1}",
                         Arguments.ID_Usuario, Arguments.IdRole);

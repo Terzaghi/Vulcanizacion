@@ -177,7 +177,7 @@ namespace RequestManager
                 _dicRequest.Add(Id_Request, pendingRequestLogic);
 
                 //Add to History
-                Model.BL.Historico_Solicitud modelHistoric = new Model.BL.Historico_Solicitud();
+                Model.BL.Historico_Solicitud modelHistoric = new Model.BL.Historico_Solicitud(ConfigurationManager.ConnectionStrings["PrensasConfigDB"].ConnectionString);
                 Model.BL.DTO.Historico_Solicitud historico = new Model.BL.DTO.Historico_Solicitud();
                 historico.Fecha = solicitud.Fecha_Generacion;
                 historico.Id_Solicitud = Id_Request;
@@ -280,7 +280,7 @@ namespace RequestManager
                     if (estadoSolicitud != null && state < estadoSolicitud)
                     {
                         //Add to History
-                        Model.BL.Historico_Solicitud modelHistoric = new Model.BL.Historico_Solicitud();
+                        Model.BL.Historico_Solicitud modelHistoric = new Model.BL.Historico_Solicitud(ConfigurationManager.ConnectionStrings["PrensasConfigDB"].ConnectionString);
                         Model.BL.DTO.Historico_Solicitud historico = new Model.BL.DTO.Historico_Solicitud();
                         historico.Fecha = DateTime.Now;
                         historico.Id_Solicitud = Id_Request;

@@ -27,7 +27,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 var sql = string.Format("INSERT INTO ESTADO (NOMBRE)" +
@@ -62,7 +62,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID_Motivo AS {0},
@@ -96,7 +96,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string sql = string.Format("DELETE FROM MOTIVO_DESHABILITACION WHERE ID_MOTIVO = {0}", id);
 
                 List<IDataParameter> parameters = new List<IDataParameter>();
@@ -123,7 +123,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 var sql = string.Format(@"SELECT
                                             ID_MOTIVO  AS {0},
                                             NOMBRE AS {1}
@@ -150,7 +150,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format("UPDATE MOTIVO_DESHABILITACION SET NOMBRE = " + ic + "{0} WHERE ID_MOTIVO = " + ic + "{1}",
                                         Arguments.Nombre, Arguments.ID_Motivo);

@@ -27,7 +27,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
 
                 var sql = string.Format("INSERT INTO SIGUIENTE_CUBIERTA (ID_PRENSA, FECHA_CHEQUEO, BARCODE_CUBIERTA, CV)" +
@@ -73,7 +73,7 @@ namespace Model.DAL
             try
             {
 
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string sql = string.Format("DELETE FROM SIGUIENTE_CUBIERTA WHERE ID_PRENSA = {0} AND CV='{1}'", id_prensa, cv);
 
                 List<IDataParameter> parameters = new List<IDataParameter>();
@@ -100,7 +100,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 var sql = string.Format(@"SELECT
                                             ID_PRENSA  AS {0},
                                             FECHA_CHEQUEO AS {1},
@@ -129,7 +129,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format(@"SELECT
                                             ID_PRENSA  AS {0},
@@ -162,7 +162,7 @@ namespace Model.DAL
 
             try
             {
-                var accessor = new DataAccesor();
+                var accessor = new DataAccesor(_connectionString);
                 string ic = accessor.ParameterIdentifierCharacter();
                 var sql = string.Format("UPDATE SIGUIENTE_CUBIERTA SET ID_PRENSA = " + ic + "{0}," +
                     " FECHA_CHEQUEO= " + ic + "{1}, BARCODE_CUBIERTA=" + ic + "{2}, CV=" + ic + "{3} " +
